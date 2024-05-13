@@ -1,0 +1,51 @@
+roleName,displayName,description,status
+Admin,John Doe,Administrator,true
+Admin NOC,Jane Smith,Network Operations Center Administrator,true
+Customer Service Support,Michael Johnson,Customer Support Representative,true
+Admin,Emily Brown,Administrator,false
+Admin NOC,David Wilson,Network Operations Center Administrator,true
+Customer Service Support,Olivia Taylor,Customer Support Representative,false
+Admin,William Martinez,Administrator,true
+Admin NOC,Sophia Lee,Network Operations Center Administrator,false
+Customer Service Support,James Johnson,Customer Support Representative,true
+Admin,Oliver Wilson,Administrator,false
+Admin NOC,Amelia Rodriguez,Network Operations Center Administrator,true
+Customer Service Support,Benjamin Lee,Customer Support Representative,false
+Admin,Emma Harris,Administrator,true
+Admin NOC,Ethan Garcia,Network Operations Center Administrator,false
+Customer Service Support,Isabella Martinez,Customer Support Representative,true
+Admin,Lucas Anderson,Administrator,false
+Admin NOC,Mia Brown,Network Operations Center Administrator,true
+Customer Service Support,Noah Wilson,Customer Support Representative,false
+Admin,Olivia Hernandez,Administrator,true
+Admin NOC,Sophia Brown,Network Operations Center Administrator,false
+Customer Service Support,Alexander Smith,Customer Support Representative,true
+Admin,Ava Hernandez,Administrator,false
+Admin NOC,William Miller,Network Operations Center Administrator,true
+Customer Service Support,Abigail Johnson,Customer Support Representative,false
+Admin,Noah Wilson,Administrator,true
+Admin NOC,Sophia Brown,Network Operations Center Administrator,false
+Customer Service Support,Alexander Smith,Customer Support Representative,true
+Admin,Ava Hernandez,Administrator,false
+Admin NOC,William Miller,Network Operations Center Administrator,true
+Customer Service Support,Abigail Johnson,Customer Support Representative,false
+Admin,Noah Wilson,Administrator,true
+Admin NOC,Sophia Brown,Network Operations Center Administrator,false
+Customer Service Support,Alexander Smith,Customer Support Representative,true
+Admin,Ava Hernandez,Administrator,false
+Admin NOC,William Miller,Network Operations Center Administrator,true
+Customer Service Support,Abigail Johnson,Customer Support Representative,false
+Admin,Noah Wilson,Administrator,true
+Admin NOC,Sophia Brown,Network Operations Center Administrator,false
+Customer Service Support,Alexander Smith,Customer Support Representative,true
+Admin,Ava Hernandez,Administrator,false
+Admin NOC,William Miller,Network Operations Center Administrator,true
+Customer Service Support,Abigail Johnson,Customer Support Representative,false
+Admin,Noah Wilson,Administrator,true
+Admin NOC,Sophia Brown,Network Operations Center Administrator,false
+Customer Service Support,Alexander Smith,Customer Support Representative,true
+Admin,Ava Hernandez,Administrator,false
+Admin NOC,William Miller,Network Operations Center Administrator,true
+Customer Service Support,Abigail Johnson,Customer Support Representative,false
+Admin,Noah Wilson,Administrator,true
+Admin NOC,Sophia Brown,Network Operations Center Administrator,false
