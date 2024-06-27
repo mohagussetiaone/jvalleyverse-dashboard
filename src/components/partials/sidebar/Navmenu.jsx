@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Collapse } from "react-collapse";
 import Icon from "@/components/ui/Icon";
 import { toggleActiveChat } from "@/pages/app/chat/store";
 import { useDispatch } from "react-redux";
@@ -30,15 +29,13 @@ const Navmenu = ({ menus }) => {
       if (item.link === locationName) {
         submenuIndex = null;
       } else {
-        const ciIndex = item.child.findIndex(
-          (ci) => ci.childlink === locationName
-        );
+        const ciIndex = item.child.findIndex((ci) => ci.childlink === locationName);
         if (ciIndex !== -1) {
           submenuIndex = i;
         }
       }
     });
-    document.title = `Dashcode  | ${locationName}`;
+    document.title = `Jvalleyverse  | ${locationName}`;
 
     setActiveSubmenu(submenuIndex);
     dispatch(toggleActiveChat(false));
@@ -69,19 +66,10 @@ const Navmenu = ({ menus }) => {
               </NavLink>
             )}
             {/* only for menulabel */}
-            {item.isHeadr && !item.child && (
-              <div className="menulabel">{item.title}</div>
-            )}
+            {item.isHeadr && !item.child && <div className="menulabel">{item.title}</div>}
             {/*    !!sub menu parent   */}
             {item.child && (
-              <div
-                className={`menu-link ${
-                  activeSubmenu === i
-                    ? "parent_active not-collapsed"
-                    : "collapsed"
-                }`}
-                onClick={() => toggleSubmenu(i)}
-              >
+              <div className={`menu-link ${activeSubmenu === i ? "parent_active not-collapsed" : "collapsed"}`} onClick={() => toggleSubmenu(i)}>
                 <div className="flex-1 flex items-start">
                   <span className="menu-icon">
                     <Icon icon={item.icon} />
@@ -89,11 +77,7 @@ const Navmenu = ({ menus }) => {
                   <div className="text-box">{item.title}</div>
                 </div>
                 <div className="flex-0">
-                  <div
-                    className={`menu-arrow transform transition-all duration-300 ${
-                      activeSubmenu === i ? " rotate-90" : ""
-                    }`}
-                  >
+                  <div className={`menu-arrow transform transition-all duration-300 ${activeSubmenu === i ? " rotate-90" : ""}`}>
                     <Icon icon="heroicons-outline:chevron-right" />
                   </div>
                 </div>

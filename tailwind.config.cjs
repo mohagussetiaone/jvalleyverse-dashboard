@@ -1,17 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js"],
   mode: "jit",
   darkMode: "class",
   theme: {
     container: {
       center: true,
       padding: {
-        DEFAULT: "15px",
+        DEFAULT: "0px",
         sm: "15px",
         lg: "15px",
         xl: "0",
@@ -130,8 +126,7 @@ module.exports = {
       },
       boxShadow: {
         base: "0px 0px 1px rgba(40, 41, 61, 0.08), 0px 0.5px 2px rgba(96, 97, 112, 0.16)",
-        base2:
-          "0px 2px 4px rgba(40, 41, 61, 0.04), 0px 8px 16px rgba(96, 97, 112, 0.16)",
+        base2: "0px 2px 4px rgba(40, 41, 61, 0.04), 0px 8px 16px rgba(96, 97, 112, 0.16)",
         base3: "16px 10px 40px rgba(15, 23, 42, 0.22)",
         deep: "-2px 0px 8px rgba(0, 0, 0, 0.16)",
         dropdown: "0px 4px 8px rgba(0, 0, 0, 0.08)",

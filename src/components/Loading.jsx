@@ -1,8 +1,9 @@
 import React from "react";
 import useDarkMode from "@/hooks/useDarkMode";
-import LogoWhite from "@/assets/images/logo/logo-white.svg";
+import LogoWhite from "@/assets/images/logo/logosmalldark.png";
 import Logo from "@/assets/images/logo/logo.svg";
 import { useSelector } from "react-redux";
+
 const Loading = () => {
   const [isDark] = useDarkMode();
   const { isAuth } = useSelector((state) => state.auth);

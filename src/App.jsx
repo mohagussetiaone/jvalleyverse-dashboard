@@ -102,9 +102,10 @@ const ProjectDetailsPage = lazy(() => import("./pages/app/projects/project-detai
 const KanbanPage = lazy(() => import("./pages/app/kanban"));
 const CalenderPage = lazy(() => import("./pages/app/calender"));
 import Loading from "@/components/Loading";
+
 function App() {
   return (
-    <main className="App  relative">
+    <main className="App relative">
       <Routes>
         <Route
           path="/"

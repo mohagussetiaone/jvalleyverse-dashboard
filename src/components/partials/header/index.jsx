@@ -1,4 +1,3 @@
-import React from "react";
 import Icon from "@/components/ui/Icon";
 import SwitchDark from "./Tools/SwitchDark";
 import HorizentalMenu from "./Tools/HorizentalMenu";
@@ -21,6 +20,7 @@ const Header = ({ className = "custom-class" }) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
   const { width, breakpoints } = useWidth();
   const [navbarType] = useNavbarType();
+
   const navbarTypeClass = () => {
     switch (navbarType) {
       case "floating":
@@ -54,16 +54,13 @@ const Header = ({ className = "custom-class" }) => {
       return "dark:border-b dark:border-slate-700 dark:border-opacity-60";
     }
   };
+
   return (
     <header className={className + " " + navbarTypeClass()}>
       <div
-        className={` app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-white
+        className={`app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-white
         ${borderSwicthClass()}
-             ${
-               menuType === "horizontal" && width > breakpoints.xl
-                 ? "py-1"
-                 : "md:py-6 py-3"
-             }
+             ${menuType === "horizontal" && width > breakpoints.xl ? "py-1" : "md:py-6 py-3"}
         `}
       >
         <div className="flex justify-between items-center h-full">
@@ -72,26 +69,9 @@ const Header = ({ className = "custom-class" }) => {
           {menuType === "vertical" && (
             <div className="flex items-center md:space-x-4 space-x-2 rtl:space-x-reverse">
               {collapsed && width >= breakpoints.xl && (
-                <button
-                  className="text-xl text-slate-900 dark:text-white"
-                  onClick={() => setMenuCollapsed(!collapsed)}
-                >
-                  {isRtl ? (
-                    <Icon icon="akar-icons:arrow-left" />
-                  ) : (
-                    <Icon icon="akar-icons:arrow-right" />
-                  )}
+                <button className="text-xl text-slate-900 dark:text-white" onClick={() => setMenuCollapsed(!collapsed)}>
+                  {isRtl ? <Icon icon="akar-icons:arrow-left" /> : <Icon icon="akar-icons:arrow-right" />}
                 </button>
-              )}
-              {width < breakpoints.xl && <Logo />}
-              {/* open mobile menu handlaer*/}
-              {width < breakpoints.xl && width >= breakpoints.md && (
-                <div
-                  className="cursor-pointer text-slate-900 dark:text-white text-2xl"
-                  onClick={handleOpenMobileMenu}
-                >
-                  <Icon icon="heroicons-outline:menu-alt-3" />
-                </div>
               )}
               <SearchModal />
             </div>
@@ -102,19 +82,14 @@ const Header = ({ className = "custom-class" }) => {
               <Logo />
               {/* open mobile menu handlaer*/}
               {width <= breakpoints.xl && (
-                <div
-                  className="cursor-pointer text-slate-900 dark:text-white text-2xl"
-                  onClick={handleOpenMobileMenu}
-                >
+                <div className="cursor-pointer text-slate-900 dark:text-white text-2xl" onClick={handleOpenMobileMenu}>
                   <Icon icon="heroicons-outline:menu-alt-3" />
                 </div>
               )}
             </div>
           )}
           {/*  Horizontal  Main Menu */}
-          {menuType === "horizontal" && width >= breakpoints.xl ? (
-            <HorizentalMenu />
-          ) : null}
+          {menuType === "horizontal" && width >= breakpoints.xl ? <HorizentalMenu /> : null}
           {/* Nav Tools  */}
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
             <Language />
@@ -124,10 +99,7 @@ const Header = ({ className = "custom-class" }) => {
             {width >= breakpoints.md && <Notification />}
             {width >= breakpoints.md && <Profile />}
             {width <= breakpoints.md && (
-              <div
-                className="cursor-pointer text-slate-900 dark:text-white text-2xl"
-                onClick={handleOpenMobileMenu}
-              >
+              <div className="cursor-pointer text-slate-900 dark:text-white text-2xl" onClick={handleOpenMobileMenu}>
                 <Icon icon="heroicons-outline:menu-alt-3" />
               </div>
             )}
