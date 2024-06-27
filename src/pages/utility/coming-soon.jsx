@@ -4,7 +4,7 @@ import Icon from "@/components/ui/Icon";
 import { Link } from "react-router-dom";
 import useDarkMode from "@/hooks/useDarkMode";
 
-import LogoWhite from "@/assets/images/logo/logo-white.svg";
+import LogoWhite from "@/assets/images/logo/logosmall.png";
 import Logo from "@/assets/images/logo/logo.svg";
 import SvgImage from "@/assets/images/svg/img-1.svg";
 
@@ -31,28 +31,17 @@ const ComingSoonPage = () => {
               <span className="inline-block w-[25px] bg-secondary-500 h-[1px]"></span>
               <span>Coming soon</span>
             </div>
-            <div className="xl:text-[70px] xl:leading-[70px] text-4xl font-semibold text-slate-900 dark:text-white">
-              Get notified when we launch
-            </div>
-            <p className="font-normal text-slate-600 dark:text-slate-300 max-w-[400px]">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt.
-            </p>
+            <div className="xl:text-[70px] xl:leading-[70px] text-4xl font-semibold text-slate-900 dark:text-white">Get notified when we launch</div>
+            <p className="font-normal text-slate-600 dark:text-slate-300 max-w-[400px]">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
             <div className="bg-white flex items-center px-3 rounded">
-              <input
-                type="text"
-                placeholder="Enter your email"
-                className="flex-1 bg-transparent h-full block w-full py-6 placeholder:text-secondary-500 text-base focus:outline-none focus:ring-0"
-              />
+              <input type="text" placeholder="Enter your email" className="flex-1 bg-transparent h-full block w-full py-6 placeholder:text-secondary-500 text-base focus:outline-none focus:ring-0" />
               <div className="flex-none">
                 <button type="button" className="btn btn-dark btn-sm px-6">
                   Notify me
                 </button>
               </div>
             </div>
-            <div className="text-sm text-slate-500 dark:text-slate-400">
-              *Don’t worry we will not spam you :
-            </div>
+            <div className="text-sm text-slate-500 dark:text-slate-400">*Don’t worry we will not spam you :</div>
           </div>
           <div>
             <img src={SvgImage} alt="" />
@@ -89,26 +78,17 @@ const ComingSoonPage = () => {
             <div>
               <ul className="flex md:justify-start justify-center space-x-3">
                 <li>
-                  <a
-                    href="#"
-                    className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900"
-                  >
+                  <a href="#" className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900">
                     Privacy policy
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900"
-                  >
+                  <a href="#" className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900">
                     Faq
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900"
-                  >
+                  <a href="#" className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900">
                     Email us
                   </a>
                 </li>

@@ -4,7 +4,7 @@ import Icon from "@/components/ui/Icon";
 import { Link } from "react-router-dom";
 import useDarkMode from "@/hooks/useDarkMode";
 
-import LogoWhite from "@/assets/images/logo/logo-white.svg";
+import LogoWhite from "@/assets/images/logo/logosmall.png";
 import Logo from "@/assets/images/logo/logo.svg";
 import SvgImage from "@/assets/images/svg/img-2.svg";
 
@@ -27,9 +27,7 @@ const UnderConstructionPage = () => {
       <div className="container">
         <div className="flex justify-center flex-wrap items-center min-h-screen flex-col text-center">
           <img src={SvgImage} alt="" />
-          <h4 className="text-3xl font-medium text-slate-900 dark:text-white mb-2">
-            We are under maintenance.
-          </h4>
+          <h4 className="text-3xl font-medium text-slate-900 dark:text-white mb-2">We are under maintenance.</h4>
           <p className="font-normal text-base text-slate-500 dark:text-slate-300">
             We’re making the system more awesome. <br />
             We’ll be back shortly.
@@ -66,26 +64,17 @@ const UnderConstructionPage = () => {
             <div>
               <ul className="flex md:justify-start justify-center space-x-3">
                 <li>
-                  <a
-                    href="#"
-                    className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900"
-                  >
+                  <a href="#" className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900">
                     Privacy policy
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900"
-                  >
+                  <a href="#" className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900">
                     Faq
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900"
-                  >
+                  <a href="#" className="text-slate-500 dark:text-slate-400 text-sm transition duration-150 hover:text-slate-900">
                     Email us
                   </a>
                 </li>

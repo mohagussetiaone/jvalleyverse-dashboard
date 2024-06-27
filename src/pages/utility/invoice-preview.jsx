@@ -6,7 +6,7 @@ import userDarkMode from "@/hooks/useDarkMode";
 
 // import images
 import MainLogo from "@/assets/images/logo/logo.svg";
-import LogoWhite from "@/assets/images/logo/logo-white.svg";
+import LogoWhite from "@/assets/images/logo/logosmall.png";
 
 const InvoicePreviewPage = () => {
   const printPage = () => {
@@ -69,9 +69,7 @@ const InvoicePreviewPage = () => {
             </div>
           </div>
           <div>
-            <span className="block text-slate-900 dark:text-slate-300 font-medium leading-5 text-xl">
-              Bill to:
-            </span>
+            <span className="block text-slate-900 dark:text-slate-300 font-medium leading-5 text-xl">Bill to:</span>
 
             <div className="text-slate-500 dark:text-slate-300 font-normal leading-5 mt-4 text-sm">
               Annette black-500 <br />
@@ -88,29 +86,17 @@ const InvoicePreviewPage = () => {
             </div>
           </div>
           <div className="space-y-[2px]">
-            <span className="block text-slate-900 dark:text-slate-300 font-medium leading-5 text-xl mb-4">
-              Invoice:
-            </span>
-            <h4 className="text-slate-600 font-medium dark:text-slate-300 text-xs uppercase">
-              Invoice number:
-            </h4>
-            <div className="text-slate-500 dark:text-slate-300 font-normal leading-5 text-sm">
-              #89572935Kh
-            </div>
-            <h4 className="text-slate-600 font-medium dark:text-slate-300 text-xs uppercase">
-              date
-            </h4>
-            <div className="text-slate-500 dark:text-slate-300 font-normal leading-5 text-sm">
-              09 December 2021
-            </div>
+            <span className="block text-slate-900 dark:text-slate-300 font-medium leading-5 text-xl mb-4">Invoice:</span>
+            <h4 className="text-slate-600 font-medium dark:text-slate-300 text-xs uppercase">Invoice number:</h4>
+            <div className="text-slate-500 dark:text-slate-300 font-normal leading-5 text-sm">#89572935Kh</div>
+            <h4 className="text-slate-600 font-medium dark:text-slate-300 text-xs uppercase">date</h4>
+            <div className="text-slate-500 dark:text-slate-300 font-normal leading-5 text-sm">09 December 2021</div>
           </div>
         </div>
         <div className="max-w-[980px] mx-auto shadow-base dark:shadow-none my-8 rounded-md overflow-x-auto">
           <TotalTable />
         </div>
-        <div className="py-10 text-center md:text-2xl text-xl font-normal text-slate-600 dark:text-slate-300">
-          Thank you for your purchase!
-        </div>
+        <div className="py-10 text-center md:text-2xl text-xl font-normal text-slate-600 dark:text-slate-300">Thank you for your purchase!</div>
       </Card>
     </div>
   );
