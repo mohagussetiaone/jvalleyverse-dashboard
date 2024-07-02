@@ -5,7 +5,7 @@ import { IoMdClose } from "react-icons/io";
 const Modal = ({ setShow, show, header, content, action, buttonName }) => {
   return (
     <Transition appear show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setShow}>
+      <Dialog as="div" className="relative z-[999]" onClose={setShow}>
         <TransitionChild as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
           <div className="fixed inset-0 bg-black/25" />
         </TransitionChild>

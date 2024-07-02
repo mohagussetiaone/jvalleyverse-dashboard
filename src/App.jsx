@@ -23,8 +23,9 @@ const LockScreen2 = lazy(() => import("./pages/auth/lock-screen2"));
 const LockScreen3 = lazy(() => import("./pages/auth/lock-screen3"));
 const Error = lazy(() => import("./pages/404"));
 
-const Project = lazy(() => import("./pages/Project/components/ProjectCard"));
 const CategoryProject = lazy(() => import("./pages/CategoryProject"));
+const Project = lazy(() => import("./pages/Project"));
+const ChapterProject = lazy(() => import("./pages/ChapterProject"));
 
 import Layout from "./layout/Layout";
 
@@ -224,6 +225,7 @@ function App() {
         <Route path="/*" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="project" element={<Project />} />
+          <Route path="chapter-project" element={<ChapterProject />} />
           <Route path="category-project" element={<CategoryProject />} />
           <Route path="ecommerce" element={<Ecommerce />} />
           <Route path="crm" element={<CrmPage />} />

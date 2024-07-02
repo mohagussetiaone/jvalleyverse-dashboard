@@ -54,8 +54,8 @@ export const menuItems = [
         childlink: "project",
       },
       {
-        childtitle: "Studi Kasus",
-        childlink: "studi-kasus",
+        childtitle: "Chapter Project",
+        childlink: "chapter-project",
       },
       {
         childtitle: "Diskusi",

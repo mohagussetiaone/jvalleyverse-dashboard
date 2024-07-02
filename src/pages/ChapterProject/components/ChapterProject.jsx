@@ -9,50 +9,44 @@ import { IoMdMore } from "react-icons/io";
 import { MdOutlineEdit, MdOutlineDeleteOutline } from "react-icons/md";
 import { Menu, MenuButton, MenuItems, MenuItem, Transition } from "@headlessui/react";
 import Loading from "@/components/Loading";
-import AddProject from "./AddProject";
-import EditProject from "./EditProject";
+import AddChapterProject from "./AddChapterProject";
+import EditChapterProject from "./EditChapterProject";
 import ModalDelete from "@/components/modal/ModalDelete";
 
-const Project = () => {
+const ChapterProject = () => {
   const queryClient = useQueryClient();
   const [globalFilter, setGlobalFilter] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
-  const [dataProject, setDataProject] = useState({});
+  const [dataChapterProject, setDataChapterProject] = useState({});
 
   const handleEdit = (data) => {
-    setDataProject(data);
+    setDataChapterProject(data);
     setShowEdit(!showEdit);
   };
 
   const handleDelete = (data) => {
-    setDataProject(data);
+    setDataChapterProject(data);
     setModalDelete(!modalDelete);
   };
 
   const columns = useMemo(
     () => [
       {
-        id: "project_name",
-        header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Nama Project</p>,
-        accessorKey: "project_name",
+        id: "projectname",
+        header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Project Name</p>,
+        accessorKey: "project.project_name",
       },
       {
-        id: "project_github",
-        header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Github</p>,
-        accessorKey: "project_github",
-        cell: (info) => {
-          return <span className="w-64 truncate block hover:underline">{info.getValue()}</span>;
-        },
+        id: "chapter_path",
+        header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Chapter Path</p>,
+        accessorKey: "chapter_path",
       },
       {
-        id: "project_youtube_playlist",
-        header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Youtube Playlist</p>,
-        accessorKey: "project_youtube_playlist",
-        cell: (info) => {
-          return <span className="w-64 truncate block hover:underline">{info.getValue()}</span>;
-        },
+        id: "chapter_name",
+        header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Chapter Name</p>,
+        accessorKey: "chapter_name",
       },
       {
         id: "aksi",
@@ -74,7 +68,7 @@ const Project = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <MenuItems className="absolute right-[6%] mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none dark:bg-boxDark z-20">
+                <MenuItems className="absolute right-[32%] mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none dark:bg-boxDark z-20">
                   <div className="rounded-lg">
                     <MenuItem>
                       <button className="flex w-full items-center px-4 py-2 text-sm text-black dark:text-white" onClick={() => handleEdit(info.row.original)}>
@@ -100,31 +94,30 @@ const Project = () => {
   );
 
   const {
-    error: errorProject,
-    isPending: isPendingProject,
-    data: dataProjects,
+    error: errorChapterProject,
+    isPending: isPendingChapterProject,
+    data: dataChapterProjects,
   } = useQuery({
-    queryKey: ["getProject"],
+    queryKey: ["getChapterProject"],
     queryFn: async () => {
-      const { data: products } = await supabase.schema("belajar").from("project").select(`
+      const { data } = await supabase.schema("belajar").from("chapter_project").select(`
         id,
-        project_name,
-        project_github,
-        project_youtube_playlist,
-        category_project (
+        chapter_path,
+        chapter_name,
+        project (
           id,
-          category_name
-        )
+          project_name
+        ),
         created_at
         `);
-      return products;
+      return data;
     },
   });
 
-  // Delete Category Project
-  const handleDeleteCategory = () => {
+  // Delete Chapter Project
+  const handleDeleteChapterProject = () => {
     // Menampilkan toast ketika request sedang diproses
-    const requestPromise = supabase.schema("belajar").from("project").delete().eq("id", dataProject.id);
+    const requestPromise = supabase.schema("belajar").from("chapter_project").delete().eq("id", dataChapterProject.id);
     toast.promise(
       requestPromise,
       {
@@ -134,10 +127,10 @@ const Project = () => {
           if (response.status === 204) {
             setModalDelete(false);
             queryClient.invalidateQueries({
-              queryKey: ["getProject"],
+              queryKey: ["getChapterProject"],
             });
           }
-          return "Delete Project Successfully";
+          return "Delete Chapter Project Successfully";
         },
         error: (error) => {
           console.log("error", error);
@@ -155,33 +148,36 @@ const Project = () => {
     );
   };
 
-  if (isPendingProject) {
+  if (isPendingChapterProject) {
     return <Loading />;
   }
 
-  if (errorProject) {
-    console.log("errorProject", errorProject);
+  if (errorChapterProject) {
+    console.log("errorChapterProject", errorChapterProject);
   }
 
-  console.log("products", dataProjects);
+  console.log("products", dataChapterProjects);
 
   return (
     <>
       <div className="overflow-x-auto">
         <div className="flex flex-col md:flex-row justify-between">
-          <Search globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} tableName="Project" />
-          <CreateAndExport setShowAdd={setShowAdd} datas={dataProjects || []} TableName="Project" />
+          <Search globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} tableName="Chapter Project" />
+          <CreateAndExport setShowAdd={setShowAdd} datas={dataChapterProjects || []} TableName="Chapter Project" />
         </div>
-        <TableContainer datas={dataProjects || []} columns={columns} tableName="Configuration Port" globalFilter={globalFilter} title="Configuration Port" setGlobalFilter={setGlobalFilter} setModalAdd={() => setModalAdd(!modalAdd)} />
+        <TableContainer datas={dataChapterProjects || []} columns={columns} tableName="Chapter Project" globalFilter={globalFilter} title="Chapter Project" setGlobalFilter={setGlobalFilter} setModalAdd={() => setModalAdd(!modalAdd)} />
       </div>
+
       {/* Modal Add */}
-      {showAdd && <AddProject showAdd={showAdd} setShowAdd={() => setShowAdd(!showAdd)} />}
+      {showAdd && <AddChapterProject showAdd={showAdd} setShowAdd={() => setShowAdd(!showAdd)} />}
+
       {/* Modal Edit */}
-      {showEdit && <EditProject dataProject={dataProject} showEdit={showEdit} setShowEdit={() => setShowEdit(!showEdit)} />}
+      {showEdit && <EditChapterProject dataChapterProject={dataChapterProject} showEdit={showEdit} setShowEdit={() => setShowEdit(!showEdit)} />}
+
       {/* Modal Delete */}
-      {modalDelete && <ModalDelete data="Category Project" idData={dataProject?.id} modalDelete={modalDelete} setModalDelete={() => setModalDelete(!modalDelete)} deleteFunction={handleDeleteCategory} />}
+      {modalDelete && <ModalDelete data="Chapter Project" idData={dataChapterProject?.id} modalDelete={modalDelete} setModalDelete={() => setModalDelete(!modalDelete)} deleteFunction={handleDeleteChapterProject} />}
     </>
   );
 };
 
-export default Project;
+export default ChapterProject;
