@@ -23,6 +23,9 @@ const LockScreen2 = lazy(() => import("./pages/auth/lock-screen2"));
 const LockScreen3 = lazy(() => import("./pages/auth/lock-screen3"));
 const Error = lazy(() => import("./pages/404"));
 
+const Project = lazy(() => import("./pages/Project/components/ProjectCard"));
+const CategoryProject = lazy(() => import("./pages/CategoryProject"));
+
 import Layout from "./layout/Layout";
 
 // components pages
@@ -102,10 +105,25 @@ const ProjectDetailsPage = lazy(() => import("./pages/app/projects/project-detai
 const KanbanPage = lazy(() => import("./pages/app/kanban"));
 const CalenderPage = lazy(() => import("./pages/app/calender"));
 import Loading from "@/components/Loading";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <main className="App relative">
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          className: "",
+          style: {
+            background: "#ffff",
+            color: "#1577d6",
+          },
+        }}
+      />
       <Routes>
         <Route
           path="/"
@@ -205,9 +223,11 @@ function App() {
         />
         <Route path="/*" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="project" element={<Project />} />
+          <Route path="category-project" element={<CategoryProject />} />
           <Route path="ecommerce" element={<Ecommerce />} />
           <Route path="crm" element={<CrmPage />} />
-          <Route path="project" element={<ProjectPage />} />
+          {/* <Route path="project" element={<ProjectPage />} /> */}
           <Route path="banking" element={<BankingPage />} />
           {/* App pages */}
           <Route path="todo" element={<TodoPage />} />

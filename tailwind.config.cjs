@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+import("tailwindcss").Config;
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js"],
   mode: "jit",
@@ -160,5 +160,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
 };

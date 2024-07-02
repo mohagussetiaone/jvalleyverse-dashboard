@@ -22,13 +22,13 @@ const Layout = () => {
   const { width, breakpoints } = useWidth();
   const [collapsed] = useSidebar();
   const navigate = useNavigate();
-  const { isAuth } = useSelector((state) => state.auth);
+  // const { isAuth } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/");
-    }
-  }, [isAuth, navigate]);
+  // useEffect(() => {
+  //   if (!isAuth) {
+  //     navigate("/");
+  //   }
+  // }, [isAuth, navigate]);
 
   const switchHeaderClass = () => {
     if (menuType === "horizontal" || menuHidden) {

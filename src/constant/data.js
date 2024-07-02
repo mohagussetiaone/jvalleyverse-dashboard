@@ -1,7 +1,7 @@
 export const menuItems = [
   {
     isHeadr: true,
-    title: "menu",
+    title: "Kursus Management",
   },
 
   {
@@ -14,16 +14,16 @@ export const menuItems = [
         childtitle: "Analytics Dashboard",
         childlink: "dashboard",
       },
+      // {
+      //   childtitle: "Ecommerce Dashboard",
+      //   childlink: "ecommerce",
+      // },
+      // {
+      //   childtitle: "Project  Dashbaord",
+      //   childlink: "project",
+      // },
       {
-        childtitle: "Ecommerce Dashboard",
-        childlink: "ecommerce",
-      },
-      {
-        childtitle: "Project  Dashbaord",
-        childlink: "project",
-      },
-      {
-        childtitle: " CRM Dashbaord",
+        childtitle: "CRM Dashbaord",
         childlink: "crm",
       },
       {
@@ -32,12 +32,60 @@ export const menuItems = [
       },
     ],
   },
+  // {
+  //   title: "changelog",
+  //   icon: "heroicons:arrow-trending-up",
+  //   link: "changelog",
+  //   isHide: false,
+  //   badge: "1.0.0",
+  // },
   {
-    title: "changelog",
-    icon: "heroicons:arrow-trending-up",
-    link: "changelog",
-    isHide: false,
-    badge: "1.0.0",
+    title: "Project",
+    icon: "heroicons-outline:academic-cap",
+    link: "#",
+    isHide: true,
+    child: [
+      {
+        childtitle: "Category Project",
+        childlink: "category-project",
+      },
+      {
+        childtitle: "Project",
+        childlink: "project",
+      },
+      {
+        childtitle: "Studi Kasus",
+        childlink: "studi-kasus",
+      },
+      {
+        childtitle: "Diskusi",
+        childlink: "diskusi",
+      },
+    ],
+  },
+  {
+    isHeadr: true,
+    title: "user management",
+  },
+  {
+    title: "User",
+    icon: "heroicons-outline:user",
+    link: "#",
+    isHide: true,
+    child: [
+      {
+        childtitle: "Users",
+        childlink: "users",
+      },
+      {
+        childtitle: "Roles",
+        childlink: "roles",
+      },
+      {
+        childtitle: "Permissions",
+        childlink: "permissions",
+      },
+    ],
   },
   {
     isHeadr: true,

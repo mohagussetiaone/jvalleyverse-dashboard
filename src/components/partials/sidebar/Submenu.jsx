@@ -22,51 +22,29 @@ const Submenu = ({ activeSubmenu, item, i }) => {
               <div>
                 <div
                   onClick={() => toggleMultiMenu(j)}
-                  className={`${
-                    activeMultiMenu
-                      ? " text-black dark:text-white font-medium"
-                      : "text-slate-600 dark:text-slate-300"
-                  } text-sm flex space-x-3 items-center transition-all duration-150 cursor-pointer`}
+                  className={`${activeMultiMenu ? " text-black dark:text-white font-medium" : "text-slate-600 dark:text-slate-300"} text-sm flex space-x-3 items-center transition-all duration-150 cursor-pointer`}
                 >
                   <span
                     className={`${
-                      activeMultiMenu
-                        ? " bg-slate-900 dark:bg-slate-300 ring-4 ring-opacity-[15%] ring-black-500 dark:ring-slate-300 dark:ring-opacity-20"
-                        : ""
+                      activeMultiMenu ? " bg-slate-900 dark:bg-slate-300 ring-4 ring-opacity-[15%] ring-black-500 dark:ring-slate-300 dark:ring-opacity-20" : ""
                     } h-2 w-2 rounded-full border border-slate-600 dark:border-white inline-block flex-none `}
                   ></span>
                   <span className="flex-1">{subItem.childtitle}</span>
                   <span className="flex-none">
-                    <span
-                      className={`menu-arrow transform transition-all duration-300 ${
-                        activeMultiMenu === j ? " rotate-90" : ""
-                      }`}
-                    >
+                    <span className={`menu-arrow transform transition-all duration-300 ${activeMultiMenu === j ? " rotate-90" : ""}`}>
                       <Icon icon="ph:caret-right" />
                     </span>
                   </span>
                 </div>
-                <Multilevel
-                  activeMultiMenu={activeMultiMenu}
-                  j={j}
-                  subItem={subItem}
-                />
+                <Multilevel activeMultiMenu={activeMultiMenu} j={j} subItem={subItem} />
               </div>
             ) : (
               <NavLink to={subItem.childlink}>
                 {({ isActive }) => (
-                  <span
-                    className={`${
-                      isActive
-                        ? " text-black dark:text-white font-medium"
-                        : "text-slate-600 dark:text-slate-300"
-                    } text-sm flex space-x-3 items-center transition-all duration-150`}
-                  >
+                  <span className={`${isActive ? " text-black dark:text-white font-medium" : "text-slate-600 dark:text-slate-300"} text-sm flex space-x-3 items-center transition-all duration-150`}>
                     <span
                       className={`${
-                        isActive
-                          ? " bg-slate-900 dark:bg-slate-300 ring-4 ring-opacity-[15%] ring-black-500 dark:ring-slate-300 dark:ring-opacity-20"
-                          : ""
+                        isActive ? " bg-slate-900 dark:bg-slate-300 ring-4 ring-opacity-[15%] ring-black-500 dark:ring-slate-300 dark:ring-opacity-20" : ""
                       } h-2 w-2 rounded-full border border-slate-600 dark:border-white inline-block flex-none`}
                     ></span>
                     <span className="flex-1">{subItem.childtitle}</span>
