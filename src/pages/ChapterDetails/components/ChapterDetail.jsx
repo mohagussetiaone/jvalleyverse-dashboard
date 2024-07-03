@@ -44,6 +44,11 @@ const ChapterDetail = () => {
         accessorKey: "chapter_project.chapter_name",
       },
       {
+        id: "chapter_detail_name",
+        header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Chapter Detail Name</p>,
+        accessorKey: "chapter_detail_name",
+      },
+      {
         id: "youtube_url",
         header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Youtube Url</p>,
         accessorKey: "youtube_url",
@@ -73,7 +78,7 @@ const ChapterDetail = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <MenuItems className="absolute right-[6%] mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none dark:bg-boxDark z-20">
+                <MenuItems className="absolute right-[5%] mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none dark:bg-boxDark z-20">
                   <div className="rounded-lg">
                     <MenuItem>
                       <button className="flex w-full items-center px-4 py-2 text-sm text-black dark:text-white" onClick={() => handleEdit(info.row.original)}>
@@ -108,11 +113,14 @@ const ChapterDetail = () => {
       const { data } = await supabase.schema("belajar").from("chapter_detail").select(`
         id,
         project (
+          id,
           project_name
         ),
         chapter_project (
+          id,
           chapter_name
         ),
+        chapter_detail_name,
         youtube_url,
         tags,
         progress,

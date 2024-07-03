@@ -26,6 +26,7 @@ const AddChapterDetail = ({ setShowAdd, showAdd }) => {
   const validationSchema = yup.object().shape({
     project_id: yup.string().min(1, "Project must be at least 1 characters").required("Project is required"),
     chapter_id: yup.string().min(1, "Chapter must be at least 1 characters").required("Chapter is required"),
+    chapter_detail_name: yup.string().min(1, "Chapter Detail Name must be at least 1 characters").required("Chapter Detail Name is required"),
     youtube_url: yup.string().min(1, "Youtube URL must be at least 1 characters").required("Youtube URL is required"),
   });
 
@@ -65,6 +66,7 @@ const AddChapterDetail = ({ setShowAdd, showAdd }) => {
   const onClearAll = () => {
     setTags([]);
   };
+
   const {
     register,
     handleSubmit,
@@ -76,11 +78,13 @@ const AddChapterDetail = ({ setShowAdd, showAdd }) => {
   });
 
   const onSubmit = async (values) => {
+    const tagsData = tags.map((tag) => tag.text);
     let payload = {
       project_id: values.project_id,
       chapter_id: values.chapter_id,
+      chapter_detail_name: values.chapter_detail_name,
       youtube_url: values.youtube_url,
-      tags: tags,
+      tags: tagsData,
     };
     // Menampilkan toast ketika request sedang diproses
     const requestPromise = supabase.schema("belajar").from("chapter_detail").insert(payload);
@@ -88,12 +92,17 @@ const AddChapterDetail = ({ setShowAdd, showAdd }) => {
       requestPromise,
       {
         loading: "Adding chapter detail...",
-        success: () => {
-          queryClient.invalidateQueries({
-            queryKey: ["getChapterDetail"],
-          });
-          setShowAdd(true);
-          return "Adding Chapter detail Successfully";
+        success: (response) => {
+          console.log("response", response);
+          if (response.status === 201) {
+            queryClient.invalidateQueries({
+              queryKey: ["getChapterDetail"],
+            });
+            setShowAdd(true);
+            return "Adding Chapter detail Successfully";
+          } else if (response.status === 409) {
+            throw response.error;
+          }
         },
         error: (error) => {
           console.log("error", error);
@@ -150,7 +159,7 @@ const AddChapterDetail = ({ setShowAdd, showAdd }) => {
   return (
     <Modal
       header="Add Chapter Detail"
-      buttonName="Addsd"
+      buttonName="Add"
       show={showAdd}
       setShow={setShowAdd}
       content={
@@ -160,6 +169,9 @@ const AddChapterDetail = ({ setShowAdd, showAdd }) => {
           </div>
           <div className="mb-3">
             <Select label="Chapter" name="chapter_id" options={optionChapter || []} value={register("chapter_id").value} onChange={handleChange} register={register} error={errors.chapter_id} required isDisabled={isPendingChapterProject} />
+          </div>
+          <div className="mb-3">
+            <LabelInput label="Chapter Detail Name" type="text" id="chapter_detail_name" name="chapter_detail_name" placeholder="Fill Chapter Detail Name" error={errors.chapter_detail_name} register={register} required />
           </div>
           <div className="mb-3">
             <LabelInput label="Youtube Url" type="text" id="youtube_url" name="youtube_url" placeholder="Fill Youtube Url" error={errors.youtube_url} register={register} required />
