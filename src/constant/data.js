@@ -58,8 +58,8 @@ export const menuItems = [
         childlink: "chapter-project",
       },
       {
-        childtitle: "Diskusi",
-        childlink: "diskusi",
+        childtitle: "Chapter Detail",
+        childlink: "chapter-detail",
       },
     ],
   },

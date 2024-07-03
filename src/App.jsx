@@ -26,6 +26,7 @@ const Error = lazy(() => import("./pages/404"));
 const CategoryProject = lazy(() => import("./pages/CategoryProject"));
 const Project = lazy(() => import("./pages/Project"));
 const ChapterProject = lazy(() => import("./pages/ChapterProject"));
+const ChapterDetails = lazy(() => import("./pages/ChapterDetails"));
 
 import Layout from "./layout/Layout";
 
@@ -226,6 +227,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="project" element={<Project />} />
           <Route path="chapter-project" element={<ChapterProject />} />
+          <Route path="chapter-detail" element={<ChapterDetails />} />
           <Route path="category-project" element={<CategoryProject />} />
           <Route path="ecommerce" element={<Ecommerce />} />
           <Route path="crm" element={<CrmPage />} />
