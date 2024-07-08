@@ -39,9 +39,9 @@ const LabelInput = ({
   };
 
   return (
-    <div className={`mt-4 ${error ? "has-error" : ""} ${horizontal ? "flex" : ""} ${validate ? "is-valid" : ""}`}>
+    <div className={`${error ? "has-error" : ""} ${horizontal ? "flex" : ""} ${validate ? "is-valid" : ""}`}>
       {label && (
-        <label htmlFor={id} className={`block capitalize ${classLabel} ${horizontal ? "flex-0 mr-6 md:w-[100px] w-[60px] break-words" : ""}`}>
+        <label htmlFor={id} className={`block pt-0.5 capitalize ${classLabel} ${horizontal ? "flex-0 mr-6 md:w-[100px] w-[60px] break-words" : ""}`}>
           {label} {required && <span className="text-red-800">*</span>} {optional && <span className="text-sm text-gray-700">(optional)</span>}
         </label>
       )}

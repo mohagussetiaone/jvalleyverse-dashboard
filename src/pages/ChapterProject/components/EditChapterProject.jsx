@@ -10,7 +10,6 @@ import LabelInput from "@/components/input/LabelInput";
 const EditChapterProject = ({ setShowEdit, showEdit, dataChapterProject }) => {
   const queryClient = useQueryClient();
   const validationSchema = yup.object().shape({
-    chapter_path: yup.string().min(1, "Chapter Path must be at least 1 characters").required("Chapter Path is required"),
     chapter_name: yup.string().min(1, "Chapter Name must be at least 1 characters").required("Chapter Name is required"),
   });
 
@@ -21,7 +20,6 @@ const EditChapterProject = ({ setShowEdit, showEdit, dataChapterProject }) => {
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      chapter_path: dataChapterProject.chapter_path,
       chapter_name: dataChapterProject.chapter_name,
     },
   });
@@ -29,7 +27,6 @@ const EditChapterProject = ({ setShowEdit, showEdit, dataChapterProject }) => {
   const onSubmit = async (values) => {
     console.log("values", values);
     let payload = {
-      chapter_path: values.chapter_path,
       chapter_name: values.chapter_name,
     };
     // Menampilkan toast ketika request sedang diproses
@@ -73,9 +70,6 @@ const EditChapterProject = ({ setShowEdit, showEdit, dataChapterProject }) => {
       setShow={setShowEdit}
       content={
         <form>
-          <div className="mb-3">
-            <LabelInput label="Chapter Path" type="text" id="chapter_path" name="chapter_path" placeholder="Fill Chapter Path" error={errors.chapter_path} register={register} required />
-          </div>
           <div>
             <LabelInput label="Chapter Name" type="text" id="chapter_name" name="chapter_name" placeholder="Fill Chapter Name" error={errors.chapter_name} register={register} required />
           </div>

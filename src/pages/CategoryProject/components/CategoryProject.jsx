@@ -100,6 +100,8 @@ const CategoryProject = () => {
     },
   });
 
+  console.log("dataCategoryProject", dataCategoryProject);
+
   // Delete Category Project
   const handleDeleteCategory = () => {
     // Menampilkan toast ketika request sedang diproses

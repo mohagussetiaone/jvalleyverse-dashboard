@@ -108,14 +108,17 @@ const Project = () => {
     queryFn: async () => {
       const { data: products } = await supabase.schema("belajar").from("project").select(`
         id,
-        project_name,
-        project_github,
-        project_youtube_playlist,
-        project_img_url,
         category_project (
           id,
           category_name
-        )
+        ),
+        project_img_url,
+        project_name,
+        project_description,
+        project_github,
+        project_youtube_embed,
+        project_youtube_playlist,
+        tags,
         created_at
         `);
       return products;

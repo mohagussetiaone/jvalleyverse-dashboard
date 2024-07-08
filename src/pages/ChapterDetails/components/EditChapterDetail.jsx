@@ -1,5 +1,3 @@
-import { useState } from "react";
-import Modal from "@/components/modal/Modal";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,66 +5,21 @@ import { useQueryClient, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import supabase from "@/configs/supabaseConfig";
 import LabelInput from "@/components/input/LabelInput";
+import Modal from "@/components/modal/Modal";
 import Select from "@/components/input/Select";
+import ErrorServer from "@/components/error/ErrorPage";
+import Loading from "@/components/Loading";
 import { handleGetProject, handleGetChapter } from "@/api/Project/ProjectApi";
-import { WithContext as ReactTags, SEPARATORS } from "react-tag-input";
-import SuggestionTags from "./data/suggestionsTags";
-import "./tags.scss";
-
-const suggestions = SuggestionTags.map((tags) => {
-  return {
-    id: tags,
-    text: tags,
-  };
-});
 
 const EditChapterDetail = ({ setShowEdit, showEdit, dataChapterDetail }) => {
   console.log("dataChapterDetail", dataChapterDetail);
   const queryClient = useQueryClient();
-  const [tags, setTags] = useState(dataChapterDetail?.tags?.map((tag) => ({ id: tag, text: tag })));
   const validationSchema = yup.object().shape({
     project_id: yup.string().optional(),
     chapter_id: yup.string().optional(),
     chapter_detail_name: yup.string().min(1, "Chapter Detail Name must be at least 1 characters").required("Chapter Detail Name is required"),
     youtube_url: yup.string().min(1, "Youtube URL must be at least 1 characters").required("Youtube URL is required"),
   });
-
-  const handleDelete = (index) => {
-    setTags(tags.filter((_, i) => i !== index));
-  };
-
-  const onTagUpdate = (index, newTag) => {
-    const updatedTags = [...tags];
-    updatedTags.splice(index, 1, newTag);
-    setValue("tags", updatedTags);
-    setTags(updatedTags);
-  };
-
-  const handleAddition = (tag) => {
-    setValue("tags", [...tags, tag]);
-    setTags((prevTags) => {
-      return [...prevTags, tag];
-    });
-  };
-
-  const handleDrag = (tag, currPos, newPos) => {
-    const newTags = tags.slice();
-
-    newTags.splice(currPos, 1);
-    newTags.splice(newPos, 0, tag);
-
-    // re-render
-    setValue("tags", newTags);
-    setTags(newTags);
-  };
-
-  const handleTagClick = (index) => {
-    console.log("The tag at index " + index + " was clicked");
-  };
-
-  const onClearAll = () => {
-    setTags([]);
-  };
 
   const {
     register,
@@ -80,18 +33,15 @@ const EditChapterDetail = ({ setShowEdit, showEdit, dataChapterDetail }) => {
       chapter_id: dataChapterDetail.chapter_id,
       chapter_detail_name: dataChapterDetail.chapter_detail_name,
       youtube_url: dataChapterDetail.youtube_url,
-      tags: dataChapterDetail.tags,
     },
   });
 
   const onSubmit = async (values) => {
-    const tagsData = tags.map((tag) => tag.text);
     let payload = {
       project_id: values.project_id,
       chapter_id: values.chapter_id,
       chapter_detail_name: values.chapter_detail_name,
       youtube_url: values.youtube_url,
-      tags: tagsData,
     };
     // Menampilkan toast ketika request sedang diproses
     const requestPromise = supabase.schema("belajar").from("chapter_detail").update(payload).eq("id", dataChapterDetail.id);
@@ -144,8 +94,10 @@ const EditChapterDetail = ({ setShowEdit, showEdit, dataChapterDetail }) => {
     queryFn: handleGetChapter,
   });
 
-  console.log("dataProjects", dataProjects);
+  if (errorProject || errorChapterProject) return <ErrorServer />;
+  if (isPendingProject || isPendingChapterProject) return <Loading />;
 
+  console.log("dataProjects", dataProjects);
   console.log("dataChapterProjects", dataChapterProjects);
 
   const handleChange = (name, selectedOption) => {
@@ -209,25 +161,6 @@ const EditChapterDetail = ({ setShowEdit, showEdit, dataChapterDetail }) => {
           </div>
           <div className="mb-3">
             <LabelInput label="Youtube Url" type="text" id="youtube_url" name="youtube_url" placeholder="Fill Youtube Url" error={errors.youtube_url} register={register} required />
-          </div>
-          <div className="mb-2">
-            <label>Tags</label>
-            <ReactTags
-              tags={tags}
-              suggestions={suggestions}
-              separators={[SEPARATORS.COMMA]}
-              handleDelete={handleDelete}
-              handleAddition={handleAddition}
-              handleDrag={handleDrag}
-              handleTagClick={handleTagClick}
-              onTagUpdate={onTagUpdate}
-              inputFieldPosition="bottom"
-              editable
-              clearAll
-              onClearAll={onClearAll}
-              maxTags={7}
-              allowAdditionFromPaste
-            />
           </div>
         </form>
       }

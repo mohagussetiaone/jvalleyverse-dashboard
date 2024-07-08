@@ -112,17 +112,16 @@ const ChapterDetail = () => {
     queryFn: async () => {
       const { data } = await supabase.schema("belajar").from("chapter_detail").select(`
         id,
-        project (
+        project!chapter_detail_project_id_fkey (
           id,
           project_name
         ),
-        chapter_project (
+        chapter_project!project_chapter_id_fkey (
           id,
           chapter_name
         ),
         chapter_detail_name,
         youtube_url,
-        tags,
         progress,
         created_at,
         updated_at

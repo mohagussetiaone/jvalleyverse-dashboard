@@ -12,7 +12,6 @@ const AddChapterProject = ({ setShowAdd, showAdd }) => {
   const queryClient = useQueryClient();
   const validationSchema = yup.object().shape({
     project_id: yup.string().min(1, "Project ID must be at least 1 characters").required("Project ID is required"),
-    chapter_path: yup.string().min(1, "Chapter Path must be at least 1 characters").required("Chapter Path is required"),
     chapter_name: yup.string().min(1, "Chapter Name must be at least 1 characters").required("Chapter Name is required"),
   });
 
@@ -29,7 +28,6 @@ const AddChapterProject = ({ setShowAdd, showAdd }) => {
   const onSubmit = async (values) => {
     let payload = {
       project_id: values.project_id,
-      chapter_path: values.chapter_path,
       chapter_name: values.chapter_name,
     };
     // Menampilkan toast ketika request sedang diproses
@@ -99,9 +97,6 @@ const AddChapterProject = ({ setShowAdd, showAdd }) => {
         <form>
           <div className="mb-3">
             <Select label="Project" name="project_id" options={optionProject || []} value={register("project_id").value} onChange={handleChange} register={register} error={errors.project_id} required isDisabled={isPendingProject} />
-          </div>
-          <div className="mb-3">
-            <LabelInput label="Chapter Path" type="text" id="chapter_path" name="chapter_path" placeholder="Fill Chapter Path" error={errors.chapter_path} register={register} required />
           </div>
           <div>
             <LabelInput label="Chapter Name" type="text" id="chapter_name" name="chapter_name" placeholder="Fill Chapter Name" error={errors.chapter_name} register={register} required />
