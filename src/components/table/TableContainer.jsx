@@ -39,7 +39,7 @@ const TableContainer = ({ datas, columns, globalFilter, setGlobalFilter, style }
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full overflow-hidden">
         <div className="title flex flex-col md:flex-row gap-2 justify-between my-4">
           <div className="text-black dark:text-gray-200">
             Showing <strong>{table.getState().pagination.pageSize * table.getState().pagination.pageIndex + 1}</strong> to{" "}

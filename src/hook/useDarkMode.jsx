@@ -1,6 +1,17 @@
-import zustand from "zustand";
+import { create } from "zustand";
 
-export const useDarkmode = zustand((set) => ({
+const useDarkMode = create((set) => ({
   darkMode: false,
-  setDarkMode: (darkMode) => set({ darkMode: darkMode }),
+  toggleDarkMode: () =>
+    set((state) => {
+      const isDarkMode = !state.darkMode;
+      if (isDarkMode) {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
+      }
+      return { darkMode: isDarkMode };
+    }),
 }));
+
+export default useDarkMode;

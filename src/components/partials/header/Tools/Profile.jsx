@@ -1,12 +1,12 @@
 import React from "react";
 import Dropdown from "@/components/ui/Dropdown";
 import Icon from "@/components/ui/Icon";
-import { Menu, Transition } from "@headlessui/react";
+import { MenuItem } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { handleLogout } from "@/pages/auth/common/store";
-
+import supabase from "@/configs/supabaseConfig";
 import UserAvatar from "@/assets/images/all-img/user.png";
+import toast from "react-hot-toast";
+import { clearAllStorage } from "@/store/local/Forage-Helper";
 
 const profileLabel = () => {
   return (
@@ -28,7 +28,51 @@ const profileLabel = () => {
 
 const Profile = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    const logoutPromise = new Promise(async (resolve, reject) => {
+      try {
+        // Membuat pengguna baru admin dengan Supabase
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+          reject(error);
+        } else {
+          resolve(error);
+          await clearAllStorage();
+        }
+      } catch (error) {
+        console.log("catch error", error);
+        if (error.message === "Network Error") {
+          reject("Internal Server Error");
+        } else {
+          reject(error.message || "Email atau Password tidak valid");
+        }
+      }
+    });
+
+    toast.promise(
+      logoutPromise,
+      {
+        loading: "Memproses logout...",
+        success: () => {
+          navigate("/signin");
+          return "Logout Berhasil";
+        },
+        error: (error) => {
+          console.log("error", error);
+          return "Terjadi kesalahan saat logout";
+        },
+      },
+      {
+        success: {
+          duration: 2000,
+        },
+        error: {
+          duration: 4000,
+        },
+      }
+    );
+  };
 
   const ProfileMenu = [
     {
@@ -85,7 +129,7 @@ const Profile = () => {
       label: "Logout",
       icon: "heroicons-outline:login",
       action: () => {
-        dispatch(handleLogout(false));
+        handleLogout();
       },
     },
   ];
@@ -93,7 +137,7 @@ const Profile = () => {
   return (
     <Dropdown label={profileLabel()} classMenuItems="w-[180px] top-[58px]">
       {ProfileMenu.map((item, index) => (
-        <Menu.Item key={index}>
+        <MenuItem key={index}>
           {({ active }) => (
             <div
               onClick={() => item.action()}
@@ -111,7 +155,7 @@ const Profile = () => {
               </div>
             </div>
           )}
-        </Menu.Item>
+        </MenuItem>
       ))}
     </Dropdown>
   );

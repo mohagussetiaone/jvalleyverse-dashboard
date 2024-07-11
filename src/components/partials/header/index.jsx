@@ -24,7 +24,7 @@ const Header = ({ className = "custom-class" }) => {
   const navbarTypeClass = () => {
     switch (navbarType) {
       case "floating":
-        return "floating  has-sticky-header";
+        return "floating has-sticky-header";
       case "sticky":
         return "sticky top-0 z-[999]";
       case "static":
@@ -59,8 +59,7 @@ const Header = ({ className = "custom-class" }) => {
     <header className={className + " " + navbarTypeClass()}>
       <div
         className={`app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-white
-        ${borderSwicthClass()}
-             ${menuType === "horizontal" && width > breakpoints.xl ? "py-1" : "md:py-6 py-3"}
+        ${borderSwicthClass()} ${menuType === "horizontal" && width > breakpoints.xl ? "py-1" : "md:py-6 py-3"}
         `}
       >
         <div className="flex justify-between items-center h-full">
@@ -97,7 +96,7 @@ const Header = ({ className = "custom-class" }) => {
             <MonoChrome />
             {width >= breakpoints.md && <Message />}
             {width >= breakpoints.md && <Notification />}
-            {width >= breakpoints.md && <Profile />}
+            <Profile />
             {width <= breakpoints.md && (
               <div className="cursor-pointer text-slate-900 dark:text-white text-2xl" onClick={handleOpenMobileMenu}>
                 <Icon icon="heroicons-outline:menu-alt-3" />

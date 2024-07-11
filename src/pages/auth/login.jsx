@@ -1,25 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "./common/login-form";
-import Social from "./common/social";
-import useDarkMode from "@/hooks/useDarkMode";
-import { ToastContainer } from "react-toastify";
+// import Social from "./common/social";
+import useDarkMode from "@/hook/useDarkMode";
 
 // image import
 import LogoWhite from "@/assets/images/logo/logosmalldark.png";
-import Logo from "@/assets/images/logo/logo.svg";
+import Logo from "@/assets/images/logo/logosmall.png";
 import Illustration from "@/assets/images/auth/ils1.svg";
 
 const login = () => {
-  const [isDark] = useDarkMode();
+  const { darkMode } = useDarkMode();
+
   return (
     <>
-      <ToastContainer />
       <div className="loginwrapper">
         <div className="lg-inner-column">
           <div className="left-column relative z-[1]">
-            <div className="">
-              <img src={Illustration} alt="" className="h-auto w-full object-contain" />
+            <div>
+              <img src={Illustration} alt="bannerLogin.jpg" className="h-auto w-full object-contain" />
             </div>
           </div>
           <div className="right-column relative">
@@ -27,7 +26,7 @@ const login = () => {
               <div className="auth-box h-full flex flex-col justify-center">
                 <div className="mobile-logo text-center mb-6 lg:hidden block">
                   <Link to="/">
-                    <img src={isDark ? LogoWhite : Logo} alt="" className="mx-auto" />
+                    <img src={darkMode ? Logo : LogoWhite} alt="logoJvalley.jpg" className="mx-auto w-[60px]" />
                   </Link>
                 </div>
                 <div className="text-center 2xl:mb-10 mb-4">
@@ -48,7 +47,7 @@ const login = () => {
                   </Link>
                 </div> */}
               </div>
-              <div className="auth-footer text-center">Copyright 2021, Dashcode All Rights Reserved.</div>
+              <div className="auth-footer text-center">Copyright {new Date().getFullYear()},Jvalleyverse All Rights Reserved.</div>
             </div>
           </div>
         </div>

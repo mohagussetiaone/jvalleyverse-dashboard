@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import Textinput from "@/components/ui/Textinput";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import Checkbox from "@/components/ui/Checkbox";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { handleLogin } from "./store";
-import { toast } from "react-toastify";
-import supabase from "@/configs/supabaseConfig"; // Pastikan untuk mengimpor supabase
+import { useNavigate } from "react-router-dom";
+import supabase from "@/configs/supabaseConfig";
+import { set } from "@/store/local/Forage";
+import Checkbox from "@/components/ui/Checkbox";
+import Textinput from "@/components/ui/Textinput";
 
 const schema = yup
   .object({
@@ -19,8 +18,9 @@ const schema = yup
   .required();
 
 const LoginForm = () => {
-  const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const [rememberMe, setRememberMe] = useState(false);
+
   const {
     register,
     formState: { errors },
@@ -30,42 +30,79 @@ const LoginForm = () => {
     mode: "all",
   });
 
-  const navigate = useNavigate();
-  const [checked, setChecked] = useState(false);
-
   const onSubmit = async (data) => {
+    console.log("data", data);
     const { email, password } = data;
-    const { user, session, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    if (!email || !password) {
+      toast.error("Email dan Password harus diisi");
+      return;
+    }
+
+    const loginPromise = new Promise(async (resolve, reject) => {
+      try {
+        // Membuat pengguna baru admin dengan Supabase
+        const { data: userLogin, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (userLogin) {
+          resolve(userLogin);
+        } else {
+          reject(error);
+        }
+      } catch (error) {
+        console.log("catch error", error);
+        if (error.message === "Network Error") {
+          reject("Internal Server Error");
+        } else {
+          reject(error.message || "Email atau Password tidak valid");
+        }
+      }
     });
 
-    if (error) {
-      console.error("Error fetching data:", error.message);
-    } else {
-      console.log("Data fetched:", data);
-    }
-    navigate("/project");
-
-    console.log("user", user);
-    console.log("session", session);
-    console.log("error", error);
-    if (error) {
-      toast.error(error.message);
-    }
-  };
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log("error", error);
+    toast.promise(
+      loginPromise,
+      {
+        loading: "Memproses login...",
+        success: (response) => {
+          set(response.session.access_token);
+          if (response.session === null) {
+            toast.error("User tidak ditemukan");
+            return;
+          } else if (response.session !== null) {
+            if (rememberMe) {
+              localStorage.setItem("email", email);
+              localStorage.setItem("password", password);
+            } else {
+              localStorage.removeItem("email");
+              localStorage.removeItem("password");
+            }
+            navigate("/project");
+            return "Login Berhasil";
+          }
+        },
+        error: (error) => {
+          console.log("error", error);
+          return "Terjadi kesalahan saat login";
+        },
+      },
+      {
+        success: {
+          duration: 1500,
+        },
+        error: {
+          duration: 4000,
+        },
+      }
+    );
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <Textinput name="email" label="Email" type="email" register={register} error={errors.email} className="h-[48px]" />
+      <Textinput name="email" label="Emails" type="email" register={register} error={errors.email} className="h-[48px]" />
       <Textinput name="password" label="Password" type="password" register={register} error={errors.password} className="h-[48px]" />
       <div className="flex justify-between">
-        <Checkbox value={checked} onChange={() => setChecked(!checked)} label="Keep me signed in" />
+        <Checkbox value={rememberMe} onChange={() => setRememberMe(!rememberMe)} label="Keep me signed in" />
         <Link to="/forgot-password" className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium">
           Forgot Password?{" "}
         </Link>
@@ -74,9 +111,13 @@ const LoginForm = () => {
       <button type="submit" className="btn btn-dark block w-full text-center">
         Sign in
       </button>
-      <button type="button" className="btn btn-dark block w-full text-center" onClick={handleLogout}>
-        Sign Out
-      </button>
+      <div className="flex justify-end">
+        Belum punya akun ?{" "}
+        <Link to="/signup" className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium">
+          {" "}
+          Sign up
+        </Link>
+      </div>
     </form>
   );
 };
