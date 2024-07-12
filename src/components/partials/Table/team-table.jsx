@@ -7,13 +7,7 @@ import { Menu } from "@headlessui/react";
 import Chart from "react-apexcharts";
 import { colors } from "@/constant/data";
 
-import {
-  useTable,
-  useRowSelect,
-  useSortBy,
-  useGlobalFilter,
-  usePagination,
-} from "react-table";
+import { useTable, useRowSelect, useSortBy, useGlobalFilter, usePagination } from "react-table";
 
 const series = [
   {
@@ -103,15 +97,9 @@ const COLUMNS = [
       return (
         <span className="flex items-center min-w-[150px]">
           <span className="w-8 h-8 rounded-full ltr:mr-3 rtl:ml-3 flex-none">
-            <img
-              src={row?.cell?.value.image}
-              alt={row?.cell?.value.name}
-              className="object-cover w-full h-full rounded-full"
-            />
+            <img src={row?.cell?.value.image} alt={row?.cell?.value.name} className="object-cover w-full h-full rounded-full" />
           </span>
-          <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">
-            {row?.cell?.value.name}
-          </span>
+          <span className="text-sm text-slate-600 dark:text-slate-300 capitalize">{row?.cell?.value.name}</span>
         </span>
       );
     },
@@ -178,13 +166,8 @@ const COLUMNS = [
               {actions.map((item, i) => (
                 <Menu.Item key={i}>
                   <div
-                    className={`
-                
-                  ${
-                    item.name === "delete"
-                      ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white"
-                      : "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"
-                  }
+                    key={i}
+                    className={`${item.name === "delete" ? "bg-danger-500 text-danger-500 bg-opacity-30   hover:bg-opacity-100 hover:text-white" : "hover:bg-slate-900 hover:text-white dark:hover:bg-slate-600 dark:hover:bg-opacity-50"}
                    w-full border-b border-b-gray-500 border-opacity-10 px-4 py-2 text-sm  last:mb-0 cursor-pointer 
                    first:rounded-t last:rounded-b flex  space-x-2 items-center rtl:space-x-reverse `}
                   >
@@ -221,24 +204,7 @@ const TeamTable = () => {
     usePagination,
     useRowSelect
   );
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    footerGroups,
-    page,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-    pageOptions,
-    state,
-    gotoPage,
-    pageCount,
-    setPageSize,
-    setGlobalFilter,
-    prepareRow,
-  } = tableInstance;
+  const { getTableProps, getTableBodyProps, headerGroups, footerGroups, page, nextPage, previousPage, canNextPage, canPreviousPage, pageOptions, state, gotoPage, pageCount, setPageSize, setGlobalFilter, prepareRow } = tableInstance;
 
   const { pageIndex, pageSize } = state;
 
@@ -248,48 +214,27 @@ const TeamTable = () => {
         <div className="overflow-x-auto -mx-6">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden ">
-              <table
-                className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700"
-                {...getTableProps}
-              >
+              <table className="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700" {...getTableProps}>
                 <thead className=" bg-slate-100 dark:bg-slate-700">
                   {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
-                        <th
-                          {...column.getHeaderProps(
-                            column.getSortByToggleProps()
-                          )}
-                          scope="col"
-                          className=" table-th "
-                        >
+                        <th {...column.getHeaderProps(column.getSortByToggleProps())} scope="col" className=" table-th ">
                           {column.render("Header")}
-                          <span>
-                            {column.isSorted
-                              ? column.isSortedDesc
-                                ? " 🔽"
-                                : " 🔼"
-                              : ""}
-                          </span>
+                          <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
                         </th>
                       ))}
                     </tr>
                   ))}
                 </thead>
-                <tbody
-                  className="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700"
-                  {...getTableBodyProps}
-                >
+                <tbody className="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700" {...getTableBodyProps}>
                   {page.map((row) => {
                     prepareRow(row);
                     return (
                       <tr {...row.getRowProps()}>
                         {row.cells.map((cell) => {
                           return (
-                            <td
-                              {...cell.getCellProps()}
-                              className="table-td py-2"
-                            >
+                            <td {...cell.getCellProps()} className="table-td py-2">
                               {cell.render("Cell")}
                             </td>
                           );

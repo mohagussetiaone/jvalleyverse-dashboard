@@ -65,6 +65,7 @@ const LoginForm = () => {
       {
         loading: "Memproses login...",
         success: (response) => {
+          console.log("response", response);
           set(response.session.access_token);
           if (response.session === null) {
             toast.error("User tidak ditemukan");
@@ -114,7 +115,6 @@ const LoginForm = () => {
       <div className="flex justify-end">
         Belum punya akun ?{" "}
         <Link to="/signup" className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium">
-          {" "}
           Sign up
         </Link>
       </div>

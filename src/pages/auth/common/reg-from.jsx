@@ -83,7 +83,10 @@ const RegForm = () => {
           navigate("/signin");
           return "Sign Up Berhasil";
         },
-        error: (message) => message,
+        error: (message) => {
+          console.log("error", message);
+          return message;
+        },
       },
       {
         success: {
@@ -101,7 +104,9 @@ const RegForm = () => {
       <Textinput name="name" label="name" type="text" placeholder=" Enter your name" register={register} error={errors.name} className="h-[48px]" />{" "}
       <Textinput name="email" label="email" type="email" placeholder=" Enter your email" register={register} error={errors.email} className="h-[48px]" />
       <Textinput name="password" label="passwrod" type="password" placeholder=" Enter your password" register={register} error={errors.password} className="h-[48px]" />
-      <button className="btn btn-dark block w-full text-center">Create an account</button>
+      <button type="submit" className="btn btn-dark block w-full text-center mt-4">
+        Create an account
+      </button>
     </form>
   );
 };
