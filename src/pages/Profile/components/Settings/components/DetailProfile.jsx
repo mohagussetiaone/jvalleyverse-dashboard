@@ -1,10 +1,18 @@
 import { useState } from "react";
-import ProfileImg from "@/assets/images/users/profileDefault.jpg";
-import { TiDelete } from "react-icons/ti";
+import defaultProfileImg from "@/assets/images/users/profileDefault.jpg";
+import { FaDice } from "react-icons/fa";
 import Card from "@/components/ui/Card";
+import supabase from "@/configs/supabaseConfig";
+import { handleUpdateImageProfile } from "@/api/Profile/ProfileApi";
+import toast from "react-hot-toast";
+import { QueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const DetailProfile = ({ userProfile }) => {
-  const [profileImg, setProfileImg] = useState(ProfileImg); // Default profile image
+  const queryClient = new QueryClient();
+  const navigate = useNavigate();
+  const urlImageProfile = `${import.meta.env.VITE_CDN_GET_IMAGE}/jvalleyverseImg/${userProfile.profile_image_url}`;
+  const [profileImg, setProfileImg] = useState(urlImageProfile); // Default profile image
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [dragOver, setDragOver] = useState(false);
@@ -25,19 +33,16 @@ const DetailProfile = ({ userProfile }) => {
     if (file) {
       // Validasi ukuran file maksimum (2MB)
       if (file.size > 2 * 1024 * 1024) {
-        alert("File size exceeds 2MB limit. Please choose a smaller file.");
+        toast.error("File size exceeds 2MB limit. Please choose a smaller file.");
         return;
       }
-
       // Validasi ekstensi file
       const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
       if (!allowedTypes.includes(file.type)) {
-        alert("Only JPEG, PNG, and JPG files are allowed.");
+        toast.error("Only JPEG, PNG, and JPG files are allowed.");
         return;
       }
-
       setSelectedFile(file);
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result);
@@ -46,19 +51,10 @@ const DetailProfile = ({ userProfile }) => {
     }
   };
 
-  const onSubmit = () => {
-    if (selectedFile) {
-      // Lakukan upload ke server atau penyimpanan gambar di sini
-      console.log("Uploading:", selectedFile);
-      // Reset selected file
-      setSelectedFile(null);
-      setPreviewUrl(null); // Reset preview URL
-    }
-  };
-
   const handleRemovePreview = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
+    setProfileImg(defaultProfileImg);
   };
 
   const handleDragOver = (e) => {
@@ -70,17 +66,85 @@ const DetailProfile = ({ userProfile }) => {
     setDragOver(false);
   };
 
+  const downloadImage = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const extension = blob.type.split("/")[1];
+    const fileName = `${Date.now()}.${extension}`;
+    const file = new File([blob], fileName, { type: blob.type });
+    handleFile(file);
+  };
+
+  const handleDiceClick = () => {
+    const newAvatarUrl = `https://api.multiavatar.com/${new Date().getTime()}.png`;
+    setProfileImg(newAvatarUrl);
+    setPreviewUrl(null);
+    downloadImage(newAvatarUrl);
+  };
+
+  const onSubmit = async () => {
+    const requestPromise = new Promise(async (resolve, reject) => {
+      try {
+        if (selectedFile) {
+          const { data, error } = await supabase.storage.from("jvalleyverseImg").upload(`profileImage/${userProfile.id}/${selectedFile.name}`, selectedFile);
+          if (error) {
+            console.error("Error uploading file:", error);
+            reject(error);
+          } else {
+            await handleUpdateImageProfile(userProfile.id, data?.path);
+            setSelectedFile(null);
+            setPreviewUrl(null);
+
+            resolve(data);
+          }
+        } else {
+          resolve();
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+    toast.promise(
+      requestPromise,
+      {
+        loading: "Uploading file...",
+        success: () => {
+          setTimeout(() => {
+            navigate("/profile");
+            window.location.reload();
+          }, 2000);
+          return "Berhasil mengubah profile";
+        },
+        error: (error) => {
+          return error.message || "An error occurred while uploading file";
+        },
+      },
+      {
+        success: {
+          duration: 1500,
+        },
+        error: {
+          duration: 2000,
+        },
+      }
+    );
+  };
+
   return (
     <Card>
       <div className="w-full gap-6">
         <div className="flex gap-4">
           <div className="w-[150px] relative">
-            <img src={previewUrl || profileImg} alt="profile" className="w-full h-auto rounded-full" />
+            <img src={profileImg} alt="profile" className="w-full h-auto rounded-full" />
             {previewUrl && (
-              <span className="absolute -top-2 -right-2 cursor-pointer" onClick={handleRemovePreview}>
-                <TiDelete className="text-red-500 w-9 h-9" />
+              <span className="absolute top-[130px] right-7 cursor-pointer" onClick={handleRemovePreview}>
+                <span className="text-red-500 bg-red-50 p-1 text-sm">Remove</span>
               </span>
             )}
+            <span className="absolute top-20 right-0 cursor-pointer" onClick={handleDiceClick}>
+              <FaDice className="text-blue-500 w-9 h-9" />
+            </span>
           </div>
           <div className="w-full flex flex-col gap-4">
             <input type="file" className="file-input w-full" onChange={handleFileChange} />
@@ -104,7 +168,7 @@ const DetailProfile = ({ userProfile }) => {
           </div>
         </div>
         <div className="flex justify-end gap-4 mt-4">
-          <button className="btn btn-sm btn-primary" disabled={!selectedFile}>
+          <button className="btn btn-sm btn-primary" onClick={onSubmit}>
             Change Profile
           </button>
         </div>

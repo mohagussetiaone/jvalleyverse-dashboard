@@ -33,7 +33,7 @@ const CardSlider = () => {
                 <img src={visaCardImage} alt="" className="h-full w-full object-cover" />
               </div>
               <img src={visaCardImage2} alt="" />
-              <div className="mt-[18px] font-semibold text-lg mb-[17px]">{item.cardNo}</div>
+              <div className="mt-[18px] font-semibold text-lg">{item.cardNo}</div>
               <div className="text-xs text-opacity-75 mb-[2px]">Card balance</div>
               <div className="text-2xl font-semibold">$10,975</div>
             </div>

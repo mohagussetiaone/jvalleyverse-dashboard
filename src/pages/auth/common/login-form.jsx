@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import supabase from "@/configs/supabaseConfig";
 import { set } from "@/store/local/Forage";
 import Checkbox from "@/components/ui/Checkbox";
@@ -28,6 +27,10 @@ const LoginForm = () => {
   } = useForm({
     resolver: yupResolver(schema),
     mode: "all",
+    defaultValues: {
+      email: localStorage.getItem("email") || "",
+      password: localStorage.getItem("password") || "",
+    },
   });
 
   const onSubmit = async (data) => {
@@ -36,6 +39,14 @@ const LoginForm = () => {
     if (!email || !password) {
       toast.error("Email dan Password harus diisi");
       return;
+    }
+
+    if (rememberMe) {
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+    } else {
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
     }
 
     const loginPromise = new Promise(async (resolve, reject) => {
@@ -51,12 +62,7 @@ const LoginForm = () => {
           reject(error);
         }
       } catch (error) {
-        console.log("catch error", error);
-        if (error.message === "Network Error") {
-          reject("Internal Server Error");
-        } else {
-          reject(error.message || "Email atau Password tidak valid");
-        }
+        reject(error);
       }
     });
 
@@ -65,21 +71,14 @@ const LoginForm = () => {
       {
         loading: "Memproses login...",
         success: (response) => {
-          console.log("response", response);
-          set(response.session.access_token);
-          if (response.session === null) {
-            toast.error("User tidak ditemukan");
-            return;
+          set(response?.session?.access_token);
+          if (response?.session === null) {
+            toast.error("Email atau Password tidak valid");
           } else if (response.session !== null) {
-            if (rememberMe) {
-              localStorage.setItem("email", email);
-              localStorage.setItem("password", password);
-            } else {
-              localStorage.removeItem("email");
-              localStorage.removeItem("password");
-            }
-            navigate("/project");
-            return "Login Berhasil";
+            setTimeout(() => {
+              navigate("/project");
+            }, 1500);
+            return "Login Success";
           }
         },
         error: (error) => {

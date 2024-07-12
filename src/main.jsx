@@ -1,21 +1,47 @@
 import ReactDOM from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import App from "./App.jsx";
 import { Provider } from "react-redux";
-import store from "./store";
+import { Toaster } from "react-hot-toast";
+import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css";
 import "simplebar-react/dist/simplebar.min.css";
 import "../src/assets/scss/app.scss";
-import "react-toastify/dist/ReactToastify.css";
-import "react-toastify/dist/ReactToastify.css";
+import App from "./App";
+import store from "./store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-document.body.classList.add("dark");
-const queryClient = new QueryClient();
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const MINUTE = 1000 * 60;
 
-root.render(
-  <QueryClientProvider client={queryClient}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </QueryClientProvider>
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * MINUTE,
+      gcTime: 10 * MINUTE,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      retryOnMount: false,
+    },
+  },
+});
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <>
+    <QueryClientProvider client={queryClient}>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          style: {
+            background: "#ffff",
+            color: "#1577d6",
+          },
+        }}
+      />
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </QueryClientProvider>
+  </>
 );

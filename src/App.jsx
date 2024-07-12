@@ -1,8 +1,7 @@
 import React from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import { authLoader } from "@/lib/authLoader";
 
 // Layout
@@ -82,8 +81,8 @@ import InvoicePreviewPage from "@/pages/utility/invoice-preview";
 import InvoiceEditPage from "@/pages/utility/invoice-edit";
 import PricingPage from "@/pages/utility/pricing";
 import BlankPage from "@/pages/utility/blank-page";
-import ComingSoonPage from "@/pages/utility/coming-soon";
-import UnderConstructionPage from "@/pages/utility/under-construction";
+// import ComingSoonPage from "@/pages/utility/coming-soon";
+// import UnderConstructionPage from "@/pages/utility/under-construction";
 import BlogPage from "@/pages/utility/blog";
 import BlogDetailsPage from "@/pages/utility/blog/blog-details";
 import FaqPage from "@/pages/utility/faq";
@@ -106,20 +105,6 @@ import ProjectPostPage from "@/pages/app/projects";
 import ProjectDetailsPage from "@/pages/app/projects/project-details";
 import KanbanPage from "@/pages/app/kanban";
 import CalenderPage from "@/pages/app/calender";
-
-// Query Client Setup
-const MINUTE = 1000 * 60;
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * MINUTE,
-      gcTime: 10 * MINUTE,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      retryOnMount: false,
-    },
-  },
-});
 
 const router = createBrowserRouter([
   {
@@ -211,23 +196,8 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-          gutter={8}
-          containerClassName=""
-          containerStyle={{}}
-          toastOptions={{
-            style: {
-              background: "#ffff",
-              color: "#1577d6",
-            },
-          }}
-        />
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
-      </QueryClientProvider>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
     </>
   );
 }

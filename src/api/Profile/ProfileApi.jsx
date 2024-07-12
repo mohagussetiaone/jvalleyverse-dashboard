@@ -60,6 +60,25 @@ export const handleUpdateProfile = async (id, payload) => {
   }
 };
 
+export const handleUpdateImageProfile = async (id, profile_image_url) => {
+  try {
+    const { data: profileImage, error } = await supabase
+      .schema("user")
+      .from("users")
+      .update({
+        profile_image_url: profile_image_url,
+      })
+      .eq("id", id)
+      .single();
+    if (error) {
+      throw error;
+    }
+    return profileImage;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const handleChangePassword = async (password) => {
   try {
     const { data: changePassword, error } = await supabase.auth.updateUser({

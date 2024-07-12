@@ -1,20 +1,25 @@
 import Icon from "@/components/ui/Icon";
-import SwitchDark from "./Tools/SwitchDark";
-import HorizentalMenu from "./Tools/HorizentalMenu";
-import useWidth from "@/hooks/useWidth";
-import useSidebar from "@/hooks/useSidebar";
-import useNavbarType from "@/hooks/useNavbarType";
 import useMenulayout from "@/hooks/useMenulayout";
-import useSkin from "@/hooks/useSkin";
-import Logo from "./Tools/Logo";
-import SearchModal from "./Tools/SearchModal";
-import Profile from "./Tools/Profile";
-import Notification from "./Tools/Notification";
-import Message from "./Tools/Message";
-import Language from "./Tools/Language";
-import useRtl from "@/hooks/useRtl";
 import useMobileMenu from "@/hooks/useMobileMenu";
+import useNavbarType from "@/hooks/useNavbarType";
+import useRtl from "@/hooks/useRtl";
+import useSidebar from "@/hooks/useSidebar";
+import useSkin from "@/hooks/useSkin";
+import useWidth from "@/hooks/useWidth";
+import React from "react";
+import HorizentalMenu from "./Tools/HorizentalMenu";
+// import Language from "./Tools/Language";
+import Logo from "./Tools/Logo";
+import Message from "./Tools/Message";
 import MonoChrome from "./Tools/MonoChrome";
+import Notification from "./Tools/Notification";
+import Profile from "./Tools/Profile";
+import SearchModal from "./Tools/SearchModal";
+import SwitchDark from "./Tools/SwitchDark";
+import { useQuery } from "@tanstack/react-query";
+import { handleGetProfile } from "@/api/Profile/ProfileApi";
+import Loading from "@/components/Loading";
+import ErrorPage from "@/components/error/ErrorPage";
 
 const Header = ({ className = "custom-class" }) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
@@ -24,7 +29,7 @@ const Header = ({ className = "custom-class" }) => {
   const navbarTypeClass = () => {
     switch (navbarType) {
       case "floating":
-        return "floating has-sticky-header";
+        return "floating  has-sticky-header";
       case "sticky":
         return "sticky top-0 z-[999]";
       case "static":
@@ -35,6 +40,7 @@ const Header = ({ className = "custom-class" }) => {
         return "sticky top-0";
     }
   };
+
   const [menuType] = useMenulayout();
   const [skin] = useSkin();
   const [isRtl] = useRtl();
@@ -55,11 +61,24 @@ const Header = ({ className = "custom-class" }) => {
     }
   };
 
+  const {
+    error: errorUserProfile,
+    isLoading: isPendingUserProfile,
+    data: userProfile,
+  } = useQuery({
+    queryKey: ["getProfile"],
+    queryFn: handleGetProfile,
+  });
+
+  if (errorUserProfile) return <ErrorPage />;
+  if (isPendingUserProfile) return <Loading />;
+
   return (
     <header className={className + " " + navbarTypeClass()}>
       <div
-        className={`app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-white
-        ${borderSwicthClass()} ${menuType === "horizontal" && width > breakpoints.xl ? "py-1" : "md:py-6 py-3"}
+        className={` app-header md:px-6 px-[15px]  dark:bg-slate-800 shadow-base dark:shadow-base3 bg-white
+        ${borderSwicthClass()}
+             ${menuType === "horizontal" && width > breakpoints.xl ? "py-1" : "md:py-6 py-3"}
         `}
       >
         <div className="flex justify-between items-center h-full">
@@ -71,6 +90,17 @@ const Header = ({ className = "custom-class" }) => {
                 <button className="text-xl text-slate-900 dark:text-white" onClick={() => setMenuCollapsed(!collapsed)}>
                   {isRtl ? <Icon icon="akar-icons:arrow-left" /> : <Icon icon="akar-icons:arrow-right" />}
                 </button>
+              )}
+              {width <= breakpoints.md && (
+                <div className="cursor-pointer text-slate-900 dark:text-white text-2xl" onClick={handleOpenMobileMenu}>
+                  <Icon icon="heroicons-outline:menu-alt-3" />
+                </div>
+              )}
+              {/* open mobile menu handlaer*/}
+              {width < breakpoints.md && width >= breakpoints.md && (
+                <div className="cursor-pointer text-slate-900 dark:text-white text-2xl" onClick={handleOpenMobileMenu}>
+                  <Icon icon="heroicons-outline:menu-alt-3" />
+                </div>
               )}
               <SearchModal />
             </div>
@@ -91,17 +121,12 @@ const Header = ({ className = "custom-class" }) => {
           {menuType === "horizontal" && width >= breakpoints.xl ? <HorizentalMenu /> : null}
           {/* Nav Tools  */}
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
-            <Language />
+            {/* <Language /> */}
             <SwitchDark />
             <MonoChrome />
             {width >= breakpoints.md && <Message />}
             {width >= breakpoints.md && <Notification />}
-            <Profile />
-            {width <= breakpoints.md && (
-              <div className="cursor-pointer text-slate-900 dark:text-white text-2xl" onClick={handleOpenMobileMenu}>
-                <Icon icon="heroicons-outline:menu-alt-3" />
-              </div>
-            )}
+            <Profile userProfile={userProfile} />
           </div>
         </div>
       </div>
