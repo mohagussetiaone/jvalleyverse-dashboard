@@ -28,6 +28,7 @@ const AddProject = ({ setShowAdd, showAdd }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const validationSchema = yup.object().shape({
     category_project_id: yup.string().min(1, "Category Project ID must be at least 1 characters").required("Category Project ID is required"),
+    project_published: yup.string().min(1, "Project Published must be at least 1 characters").required("Project Published is required"),
     project_name: yup.string().min(1, "Project Name must be at least 1 characters").required("Project Name is required"),
     project_description: yup.string().min(1, "Project Description must be at least 1 characters").required("Project Description is required"),
     project_github: yup.string().min(1, "Url Github must be at least 1 characters").required("Url Github is required"),
@@ -54,7 +55,6 @@ const AddProject = ({ setShowAdd, showAdd }) => {
     const requestPromise = new Promise(async (resolve, reject) => {
       try {
         const { data: projectNameData, error: projectNameError } = await supabase.schema("belajar").from("project").select("id").eq("project_name", values.project_name);
-
         console.log("projectNameData", projectNameData);
         if (projectNameError) throw projectNameError;
         if (projectNameData.length > 0) {
@@ -85,11 +85,14 @@ const AddProject = ({ setShowAdd, showAdd }) => {
           project_github: values.project_github,
           project_youtube_embed: values.project_youtube_embed,
           project_youtube_playlist: values.project_youtube_playlist,
+          project_published: values.project_published,
           tags: tagsData,
         };
         // Insert project data
         const { data: dataProject, error: errorProject } = await supabase.schema("belajar").from("project").insert(payload);
         // error insert
+        console.log("dataProject", dataProject);
+        console.log("errorProject", errorProject);
         if (errorProject) throw errorProject;
         // when all process finish
         resolve(dataProject);
@@ -169,6 +172,17 @@ const AddProject = ({ setShowAdd, showAdd }) => {
     value: project.id,
     label: project.category_name,
   }));
+
+  const optionProjectPublish = [
+    {
+      label: "Ya",
+      value: true,
+    },
+    {
+      label: "Tidak",
+      value: false,
+    },
+  ];
 
   const handleDelete = (index) => {
     setTags(tags.filter((_, i) => i !== index));
@@ -257,9 +271,13 @@ const AddProject = ({ setShowAdd, showAdd }) => {
               <LabelInput label="Url Youtube" type="text" id="project_youtube_embed" name="project_youtube_embed" placeholder="Fill Url Youtube" error={errors.project_youtube_embed} register={register} required />
             </div>
           </div>
-          <div className="mb-2">
-            <LabelInput label="Youtube Playlist" type="text" id="project_youtube_playlist" name="project_youtube_playlist" placeholder="Fill Youtube Playlist" error={errors.project_youtube_playlist} register={register} optional />
+          <div className="grid grid-cols-2 gap-2">
+            <div className="mb-2">
+              <LabelInput label="Youtube Playlist" type="text" id="project_youtube_playlist" name="project_youtube_playlist" placeholder="Fill Youtube Playlist" error={errors.project_youtube_playlist} register={register} optional />
+            </div>
+            <Select label="Publikasi" name="project_published" options={optionProjectPublish || []} value={register("project_published").value} onChange={handleChange} register={register} error={errors.project_published} required />
           </div>
+
           <div className="mb-2">
             <TextInput label="Project Description" type="text" id="project_description" name="project_description" placeholder="Fill Project Description" error={errors.project_description} register={register} required />
           </div>

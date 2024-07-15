@@ -1,12 +1,15 @@
 import supabase from "@/configs/supabaseConfig";
+import { getSessionData } from "@/store/local/Forage";
 
 export const handleGetProfile = async () => {
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = await getSessionData();
+    // const {
+    //   data: { user },
+    // } = await supabase.auth.getUser();
+    console.log("user", user);
     if (user) {
-      const { data: profile } = await supabase
+      const { data: profile, error } = await supabase
         .schema("user")
         .from("users")
         .select(
@@ -29,8 +32,13 @@ export const handleGetProfile = async () => {
         )
         .eq("id", user.id)
         .single();
-      return profile;
+      if (error) {
+        throw error;
+      } else {
+        return profile;
+      }
     }
+    return user;
   } catch (error) {
     throw new Error(error);
   }
@@ -56,22 +64,29 @@ export const handleUpdateProfile = async (id, payload) => {
     }
     return profile;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(JSON.stringify(error, null, 2));
   }
 };
 
-export const handleUpdateImageProfile = async (id, profile_image_url) => {
+export const handleUpdateImageProfile = async (payload) => {
+  console.log("payload", payload);
   try {
     const { data: profileImage, error } = await supabase
       .schema("user")
       .from("users")
       .update({
-        profile_image_url: profile_image_url,
+        profile_image_url: payload.profile_image_url_new,
       })
-      .eq("id", id)
+      .eq("id", payload.id)
       .single();
     if (error) {
       throw error;
+    } else {
+      const { data, error } = await supabase.storage.from("jvalleyverseImg").remove([payload.profile_image_url_old]);
+      console.log("hapus data", data);
+      if (error) {
+        throw error;
+      }
     }
     return profileImage;
   } catch (error) {

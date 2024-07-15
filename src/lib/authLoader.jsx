@@ -7,15 +7,20 @@ import { handleCheckAuth } from "@/api/Auth/checkAuth";
 
 export const authLoader = async ({ request }) => {
   const authToken = await localforage.getItem("userSession");
+  const authData = await localforage.getItem("sessionData");
   const url = new URL(request.url);
 
   // Redirect to '/project' if the user is trying to access '/signin' or '/signup' and a token exists
-  if (authToken && (url.pathname === "/signin" || url.pathname === "/signup")) {
+  if ((authToken && url.pathname === "/signin") || url.pathname === "/signup") {
+    return redirect("/project");
+  } else if ((authData && url.pathname === "/signin") || url.pathname === "/signup") {
     return redirect("/project");
   }
 
   // Redirect to '/signin' if there's no token and the user is trying to access a protected route
   if (!authToken && !["/signin", "/signup"].includes(url.pathname)) {
+    return redirect("/signin");
+  } else if (!authData && !["/signin", "/signup"].includes(url.pathname)) {
     return redirect("/signin");
   }
 

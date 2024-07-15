@@ -20,6 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import { handleGetProfile } from "@/api/Profile/ProfileApi";
 import Loading from "@/components/Loading";
 import ErrorPage from "@/components/error/ErrorPage";
+import toast from "react-hot-toast";
 
 const Header = ({ className = "custom-class" }) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
@@ -70,8 +71,8 @@ const Header = ({ className = "custom-class" }) => {
     queryFn: handleGetProfile,
   });
 
-  if (errorUserProfile) return <ErrorPage />;
-  if (isPendingUserProfile) return <Loading />;
+  if (errorUserProfile) return toast.error("Error while fetching profile");
+  if (isPendingUserProfile) return console.log("Loading...");
 
   return (
     <header className={className + " " + navbarTypeClass()}>

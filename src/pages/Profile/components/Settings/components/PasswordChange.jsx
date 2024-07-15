@@ -12,21 +12,19 @@ const PasswordChange = ({ userProfile }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const validationSchema = yup.object().shape({
-    password: yup.string().min(1, "Password must be at least 1 characters").required("Password is required"),
-    confirm_password: yup.string().min(1, "Password must be at least 1 characters").required("Password is required"),
+    password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    confirm_password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
   });
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const onSubmit = async (values) => {
-    console.log("values", values);
     if (values.password !== values.confirm_password) {
       toast.error("Password does not match");
       return;
@@ -57,7 +55,6 @@ const PasswordChange = ({ userProfile }) => {
           return "Change password successfully";
         },
         error: (error) => {
-          console.log("error", error);
           return error.message || "An error occurred while processing data";
         },
       },
@@ -79,7 +76,7 @@ const PasswordChange = ({ userProfile }) => {
           <div>
             <LabelInput label="Email" value={userProfile.email} type="email" id="email" name="email" placeholder="nFJpG@example.com" error={errors.email} register={register} disabled />
           </div>
-          <div className="w-full flex gap-4 mb-2">
+          <div className="w-full flex gap-4 mt-2">
             <div className="w-1/2">
               <LabelInput label="Password" type="password" id="password" name="password" placeholder="••••••••" error={errors.password} register={register} required />
             </div>

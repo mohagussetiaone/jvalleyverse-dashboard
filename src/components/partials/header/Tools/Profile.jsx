@@ -4,17 +4,17 @@ import Icon from "@/components/ui/Icon";
 import { MenuItem } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import supabase from "@/configs/supabaseConfig";
-import UserAvatar from "@/assets/images/all-img/user.png";
+import ImageDefault from "@/assets/images/users/profileDefault.jpg";
 import toast from "react-hot-toast";
 import { clearAllStorage } from "@/store/local/Forage-Helper";
 
 const profileLabel = (userProfile) => {
-  const urlImageProfile = `${import.meta.env.VITE_CDN_GET_IMAGE}/jvalleyverseImg/${userProfile}`;
+  const urlImageProfile = `${import.meta.env.VITE_CDN_GET_IMAGE}/jvalleyverseImg/${userProfile?.profile_image_url}`;
   return (
     <div className="flex items-center">
       <div className="flex-1">
         <div className="lg:h-8 lg:w-8 h-7 w-7 rounded-full">
-          <img src={urlImageProfile || UserAvatar} alt="" className="block w-full h-full object-cover rounded-full" />
+          <img src={userProfile !== null ? urlImageProfile : ImageDefault} alt="" className="block w-full h-full object-cover rounded-full" />
         </div>
       </div>
     </div>
@@ -36,7 +36,6 @@ const Profile = ({ userProfile }) => {
           await clearAllStorage();
         }
       } catch (error) {
-        console.log("catch error", error);
         if (error.message === "Network Error") {
           reject("Internal Server Error");
         } else {
@@ -54,7 +53,6 @@ const Profile = ({ userProfile }) => {
           return "Logout Berhasil";
         },
         error: (error) => {
-          console.log("error", error);
           return "Terjadi kesalahan saat logout";
         },
       },
@@ -130,7 +128,7 @@ const Profile = ({ userProfile }) => {
   ];
 
   return (
-    <Dropdown label={profileLabel(userProfile.profile_image_url)} classMenuItems="w-[180px] top-[58px]">
+    <Dropdown label={profileLabel(userProfile)} classMenuItems="w-[180px] top-[58px]">
       {ProfileMenu.map((item, index) => (
         <MenuItem key={index}>
           {({ active }) => (

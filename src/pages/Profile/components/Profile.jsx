@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/Icon";
 import Card from "@/components/ui/Card";
@@ -6,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { handleGetProfile } from "@/api/Profile/ProfileApi";
 import Loading from "@/components/Loading";
 import ErrorPage from "@/components/error/ErrorPage";
+import ImageDefault from "@/assets/images/users/profileDefault.jpg";
 import dayjs from "dayjs";
 
 const profile = () => {
@@ -18,10 +18,12 @@ const profile = () => {
     queryFn: handleGetProfile,
   });
 
-  if (errorUserProfile) return <ErrorPage />;
-  if (isPendingUserProfile) return <Loading />;
+  if (errorUserProfile) return toast.error("Error while fetching profile");
+  if (isPendingUserProfile) return console.log("Loading...");
 
   console.log("userProfile", userProfile);
+
+  const profileImage = `${import.meta.env.VITE_CDN_GET_IMAGE}/jvalleyverseImg/${userProfile?.profile_image_url}`;
 
   return (
     <>
@@ -32,7 +34,7 @@ const profile = () => {
             <div className="flex flex-row gap-4 md:gap-12 mt-32 md:mt-14">
               <div className="flex-none">
                 <div className="md:h-[186px] md:w-[186px] h-[80px] w-[80px] md:ml-0 md:mr-0 ml-auto mr-auto md:mb-0 mb-4 rounded-full ring-4 ring-slate-100 relative">
-                  <img src={`${import.meta.env.VITE_CDN_GET_IMAGE}/jvalleyverseImg/${userProfile?.profile_image_url}`} alt="imageProfile.jpg" className="w-full h-full object-cover rounded-full" />
+                  <img src={userProfile?.profile_image_url !== null ? profileImage : ImageDefault} alt="imageProfile.jpg" className="w-full h-full object-cover rounded-full" />
                   <Link to="/profile/setting" className="absolute -right-2 top-[50px] md:right-2 h-8 w-8 bg-slate-50 text-slate-600 rounded-full shadow-sm flex flex-col items-center justify-center md:top-[140px] ">
                     <Icon icon="heroicons:pencil-square" />
                   </Link>

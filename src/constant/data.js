@@ -81,10 +81,6 @@ export const menuItems = [
         childtitle: "Roles",
         childlink: "roles",
       },
-      {
-        childtitle: "Permissions",
-        childlink: "permissions",
-      },
     ],
   },
   {

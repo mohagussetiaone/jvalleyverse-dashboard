@@ -1,18 +1,16 @@
 import { useState } from "react";
-import defaultProfileImg from "@/assets/images/users/profileDefault.jpg";
+import ImageDefault from "@/assets/images/users/profileDefault.jpg";
+import toast from "react-hot-toast";
 import { FaDice } from "react-icons/fa";
-import Card from "@/components/ui/Card";
 import supabase from "@/configs/supabaseConfig";
 import { handleUpdateImageProfile } from "@/api/Profile/ProfileApi";
-import toast from "react-hot-toast";
-import { QueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import Card from "@/components/ui/Card";
 
 const DetailProfile = ({ userProfile }) => {
-  const queryClient = new QueryClient();
   const navigate = useNavigate();
-  const urlImageProfile = `${import.meta.env.VITE_CDN_GET_IMAGE}/jvalleyverseImg/${userProfile.profile_image_url}`;
-  const [profileImg, setProfileImg] = useState(urlImageProfile); // Default profile image
+  const urlImageProfile = `${import.meta.env.VITE_CDN_GET_IMAGE}/jvalleyverseImg/${userProfile?.profile_image_url}`;
+  const [profileImg, setProfileImg] = useState(userProfile?.profile_image_url !== null ? urlImageProfile : ImageDefault);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [dragOver, setDragOver] = useState(false);
@@ -46,6 +44,7 @@ const DetailProfile = ({ userProfile }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result);
+        setProfileImg(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -54,7 +53,7 @@ const DetailProfile = ({ userProfile }) => {
   const handleRemovePreview = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
-    setProfileImg(defaultProfileImg);
+    setProfileImg(ImageDefault);
   };
 
   const handleDragOver = (e) => {
@@ -91,7 +90,12 @@ const DetailProfile = ({ userProfile }) => {
             console.error("Error uploading file:", error);
             reject(error);
           } else {
-            await handleUpdateImageProfile(userProfile.id, data?.path);
+            let payload = {
+              id: userProfile.id,
+              profile_image_url_new: data?.path,
+              profile_image_url_old: userProfile.profile_image_url,
+            };
+            await handleUpdateImageProfile(payload);
             setSelectedFile(null);
             setPreviewUrl(null);
 
@@ -142,7 +146,7 @@ const DetailProfile = ({ userProfile }) => {
                 <span className="text-red-500 bg-red-50 p-1 text-sm">Remove</span>
               </span>
             )}
-            <span className="absolute top-20 right-0 cursor-pointer" onClick={handleDiceClick}>
+            <span className="absolute top-16 md:top-[70px] xl:top-20 right-0 cursor-pointer" onClick={handleDiceClick}>
               <FaDice className="text-blue-500 w-9 h-9" />
             </span>
           </div>

@@ -25,12 +25,12 @@ async function clearAllStorage() {
   try {
     // Menunggu operasi asinkron dari localForage.clear() selesai
     await localforage.clear();
-    console.log("LocalForage data cleared");
   } catch (error) {
     // Menangani error jika operasi asinkron gagal
     console.error("Error clearing LocalForage data:", error);
   }
 }
+
 async function clearLocalforage() {
   try {
     // Menunggu operasi asinkron dari localForage.clear() selesai

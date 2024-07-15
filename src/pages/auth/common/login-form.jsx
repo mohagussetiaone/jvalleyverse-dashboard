@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate } from "react-router-dom";
 import supabase from "@/configs/supabaseConfig";
-import { set } from "@/store/local/Forage";
+import { setSession, setSessionData } from "@/store/local/Forage";
 import Checkbox from "@/components/ui/Checkbox";
 import Textinput from "@/components/ui/Textinput";
 
@@ -56,7 +56,8 @@ const LoginForm = () => {
           email,
           password,
         });
-        if (userLogin) {
+        console.log("userLogin", userLogin);
+        if (userLogin.session !== null) {
           resolve(userLogin);
         } else {
           reject(error);
@@ -71,19 +72,25 @@ const LoginForm = () => {
       {
         loading: "Memproses login...",
         success: (response) => {
-          set(response?.session?.access_token);
-          if (response?.session === null) {
-            toast.error("Email atau Password tidak valid");
-          } else if (response.session !== null) {
+          console.log("response", response);
+          setSession(response?.session?.access_token);
+          setSessionData(response?.session?.user);
+          if (response.session !== null) {
+            console.log("yes");
             setTimeout(() => {
               navigate("/project");
+              window.location.href = "/project";
             }, 1500);
+
             return "Login Success";
           }
         },
         error: (error) => {
-          console.log("error", error);
-          return "Terjadi kesalahan saat login";
+          if (error?.status === 400) {
+            return "Email dan Password tidak sesuai";
+          } else {
+            return "Terjadi kesalahan saat login";
+          }
         },
       },
       {

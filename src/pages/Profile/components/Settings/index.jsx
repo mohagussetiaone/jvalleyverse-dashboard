@@ -34,8 +34,8 @@ const index = () => {
     queryFn: handleGetProfile,
   });
 
-  if (isPendingUserProfile) return <Loading />;
-  if (errorUserProfile) return <ErrorPage />;
+  if (errorUserProfile) return toast.error("Error while fetching profile");
+  if (isPendingUserProfile) return console.log("Loading...");
 
   console.log("userProfile", userProfile);
 

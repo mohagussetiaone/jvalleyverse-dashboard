@@ -43,7 +43,7 @@ const Project = () => {
         header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Github</p>,
         accessorKey: "project_github",
         cell: (info) => {
-          return <span className="w-64 truncate block hover:underline">{info.getValue()}</span>;
+          return <span className="w-64 truncate block">{info.getValue()}</span>;
         },
       },
       {
@@ -51,7 +51,7 @@ const Project = () => {
         header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Youtube Playlist</p>,
         accessorKey: "project_youtube_playlist",
         cell: (info) => {
-          return <span className="w-64 truncate block hover:underline">{info.getValue()}</span>;
+          return <span className="w-64 truncate block">{info.getValue()}</span>;
         },
       },
       {
@@ -112,6 +112,7 @@ const Project = () => {
           id,
           category_name
         ),
+        project_published,
         project_img_url,
         project_name,
         project_description,
@@ -124,6 +125,8 @@ const Project = () => {
       return products;
     },
   });
+
+  console.log("dataProjects", dataProjects);
 
   // Delete Category Project
   const handleDeleteCategory = () => {
@@ -167,7 +170,9 @@ const Project = () => {
     console.log("errorProject", errorProject);
   }
 
-  console.log("projects", dataProjects);
+  console.log("isPendingProject", isPendingProject);
+
+  console.log("errorProject", errorProject);
 
   return (
     <>

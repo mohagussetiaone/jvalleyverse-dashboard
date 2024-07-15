@@ -25,8 +25,15 @@ import LockScreen3 from "@/pages/auth/lock-screen3";
 import Dashboard from "@/pages/dashboard";
 import Ecommerce from "@/pages/dashboard/ecommerce";
 import CrmPage from "@/pages/dashboard/crm";
-import ProjectPage from "@/pages/dashboard/project";
 import BankingPage from "@/pages/dashboard/banking";
+// Developed
+import CategoryProject from "@/pages/CategoryProject";
+import Project from "@/pages/Project";
+import ChapterProject from "@/pages/ChapterProject";
+import ChapterDetail from "@/pages/ChapterDetails";
+
+import Users from "@/pages/Users";
+import Roles from "@/pages/Roles";
 
 // Components
 import Button from "@/pages/components/button";
@@ -115,7 +122,14 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <Dashboard /> },
       { path: "ecommerce", element: <Ecommerce /> },
       { path: "crm", element: <CrmPage /> },
-      { path: "project", element: <ProjectPage /> },
+      // developed
+      { path: "category-project", element: <CategoryProject /> },
+      { path: "project", element: <Project /> },
+      { path: "chapter-project", element: <ChapterProject /> },
+      { path: "chapter-detail", element: <ChapterDetail /> },
+      { path: "users", element: <Users /> },
+      { path: "roles", element: <Roles /> },
+
       { path: "banking", element: <BankingPage /> },
       { path: "todo", element: <TodoPage /> },
       { path: "email", element: <EmailPage /> },
@@ -169,7 +183,7 @@ const router = createBrowserRouter([
       { path: "blog", element: <BlogPage /> },
       { path: "blog-details", element: <BlogDetailsPage /> },
       { path: "faq", element: <FaqPage /> },
-      { path: "profile/setting", element: <Settings /> },
+      { path: "settings", element: <Settings /> },
       { path: "profile", element: <Profile /> },
       { path: "basic", element: <BasicWidget /> },
       { path: "statistic", element: <StatisticWidget /> },
@@ -178,7 +192,9 @@ const router = createBrowserRouter([
       { path: "changelog", element: <ChangelogPage /> },
     ],
   },
-  { path: "signin", element: <SignIn /> },
+
+  { path: "signin", loader: authLoader, element: <SignIn /> },
+
   { path: "signin2", element: <SignIn2 /> },
   { path: "signin3", element: <SignIn3 /> },
   { path: "signup", element: <SignUp /> },

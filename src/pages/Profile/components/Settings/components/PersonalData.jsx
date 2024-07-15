@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -13,13 +13,15 @@ import Card from "@/components/ui/Card";
 const PersonalData = ({ userProfile }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [isUsernameEditable, setIsUsernameEditable] = useState(true);
+
   const validationSchema = yup.object().shape({
-    name: yup.string().min(1, "Full name must be at least 1 characters").required("Full name is required"),
-    email: yup.string().min(1, "Email must be at least 1 characters").required("Email is required"),
-    username: yup.string().min(1, "Username must be at least 1 characters").required("Username is required"),
+    name: yup.string().min(3, "Full name must be at least 3 characters").required("Full name is required"),
+    email: yup.string().min(3, "Email must be at least 3 characters").required("Email is required"),
+    username: yup.string().min(3, "Username must be at least 3 characters").required("Username is required"),
     phone: yup.string().min(1, "Phone must be at least 1 characters").required("Phone is required"),
-    about: yup.string().optional(),
-    address: yup.string().optional(),
+    about: yup.string().optional().nullable(),
+    address: yup.string().optional().nullable(),
   });
 
   const {
@@ -39,6 +41,9 @@ const PersonalData = ({ userProfile }) => {
       setValue("phone", userProfile.phone);
       setValue("address", userProfile.address);
       setValue("about", userProfile.about);
+      if (userProfile.username) {
+        setIsUsernameEditable(false);
+      }
     }
   }, [userProfile, setValue]);
 
@@ -75,8 +80,19 @@ const PersonalData = ({ userProfile }) => {
           return "Profile updated successfully";
         },
         error: (error) => {
-          console.log("error", error);
-          return error.message || "An error occurred while processing data";
+          try {
+            const errorMessage = JSON.parse(error.message);
+            if (errorMessage.code === "23505") {
+              if (errorMessage.message.includes("users_phone_key")) {
+                return "Phone number is already in use.";
+              } else if (errorMessage.message.includes("users_username_key")) {
+                return "Username is already in use.";
+              }
+            }
+            return `Error: ${errorMessage.message} (Code: ${errorMessage.code})`;
+          } catch (e) {
+            return "An unexpected error occurred.";
+          }
         },
       },
       {
@@ -101,7 +117,7 @@ const PersonalData = ({ userProfile }) => {
             <LabelInput label="Email" type="email" id="email" name="email" placeholder="nFJpG@example.com" error={errors.email} register={register} required />
           </div>
           <div className="mb-2">
-            <LabelInput label="Username" type="username" id="username" name="username" placeholder="john" error={errors.username} register={register} required />
+            <LabelInput label="Username" type="username" id="username" name="username" placeholder="john" error={errors.username} register={register} disabled={!isUsernameEditable} required />
           </div>
           <div className="mb-2">
             <LabelInput label="Phone" type="phone" id="phone" name="phone" placeholder="081234567890" error={errors.phone} register={register} required />

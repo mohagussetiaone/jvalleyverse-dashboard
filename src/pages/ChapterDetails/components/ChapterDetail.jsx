@@ -47,11 +47,17 @@ const ChapterDetail = () => {
         id: "chapter_detail_name",
         header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Chapter Detail Name</p>,
         accessorKey: "chapter_detail_name",
+        cell: (info) => {
+          return <span className="w-64 truncate block">{info.getValue()}</span>;
+        },
       },
       {
         id: "youtube_url",
         header: () => <p className="text-sm font-bold text-gray-800 dark:text-neutral-300">Youtube Url</p>,
         accessorKey: "youtube_url",
+        cell: (info) => {
+          return <span className="w-64 truncate block">{info.getValue()}</span>;
+        },
       },
       {
         id: "tags",

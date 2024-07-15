@@ -22,7 +22,7 @@ const suggestions = SuggestionTags.map((tags) => {
 });
 
 const EditProject = ({ setShowEdit, showEdit, dataProject }) => {
-  console.log("dataProject", dataProject);
+  console.log("data Project id", dataProject);
   const queryClient = useQueryClient();
   const [storage, setStorage] = useState();
   const [tags, setTags] = useState(dataProject?.tags?.map((tag) => ({ id: tag, text: tag })));
@@ -31,6 +31,7 @@ const EditProject = ({ setShowEdit, showEdit, dataProject }) => {
 
   const validationSchema = yup.object().shape({
     category_project_id: yup.string().min(1, "Category Project ID must be at least 1 characters").required("Category Project ID is required"),
+    project_published: yup.string().min(1, "Project Published must be at least 1 characters").required("Project Published is required"),
     project_name: yup.string().min(1, "Project Name must be at least 1 characters").required("Project Name is required"),
     project_github: yup.string().min(1, "Project Github must be at least 1 characters").required("Project Github is required"),
     project_youtube_embed: yup.string().min(1, "Url Youtube must be at least 1 characters").required("Url Youtube is required"),
@@ -47,6 +48,7 @@ const EditProject = ({ setShowEdit, showEdit, dataProject }) => {
     resolver: yupResolver(validationSchema),
     defaultValues: {
       category_project_id: dataProject?.category_project?.id,
+      project_published: dataProject?.project_published,
       project_name: dataProject.project_name,
       project_github: dataProject.project_github,
       project_youtube_embed: dataProject.project_youtube_embed,
@@ -74,6 +76,7 @@ const EditProject = ({ setShowEdit, showEdit, dataProject }) => {
 
         let payload = {
           category_project_id: values.category_project_id,
+          project_published: values.project_published,
           project_name: values.project_name,
           project_github: values.project_github,
           project_youtube_embed: values.project_youtube_embed,
@@ -210,6 +213,17 @@ const EditProject = ({ setShowEdit, showEdit, dataProject }) => {
     setTags([]);
   };
 
+  const optionProjectPublish = [
+    {
+      label: "Ya",
+      value: true,
+    },
+    {
+      label: "Tidak",
+      value: false,
+    },
+  ];
+
   return (
     <Modal
       header="Edit Project"
@@ -261,8 +275,21 @@ const EditProject = ({ setShowEdit, showEdit, dataProject }) => {
               <LabelInput label="Url Youtube" type="text" id="project_youtube_embed" name="project_youtube_embed" placeholder="Fill Url Youtube" error={errors.project_youtube_embed} register={register} required />
             </div>
           </div>
-          <div className="mb-2">
-            <LabelInput label="Youtube Playlist" type="text" id="project_youtube_playlist" name="project_youtube_playlist" placeholder="Fill Youtube Playlist" error={errors.project_youtube_playlist} register={register} optional />
+          <div className="grid grid-cols-2 gap-2">
+            <div className="mb-2">
+              <LabelInput label="Youtube Playlist" type="text" id="project_youtube_playlist" name="project_youtube_playlist" placeholder="Fill Youtube Playlist" error={errors.project_youtube_playlist} register={register} optional />
+            </div>
+            <Select
+              label="Publikasi"
+              name="project_published"
+              options={optionProjectPublish || []}
+              value={register("project_published").value}
+              defaultValue={dataProject?.project_published}
+              onChange={handleChange}
+              register={register}
+              error={errors.project_published}
+              required
+            />
           </div>
           <div className="mb-2">
             <TextInput label="Project Description" type="text" id="project_description" name="project_description" placeholder="Fill Project Description" error={errors.project_description} register={register} required />
