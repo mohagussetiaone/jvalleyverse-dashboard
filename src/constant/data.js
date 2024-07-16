@@ -84,6 +84,12 @@ export const menuItems = [
     ],
   },
   {
+    title: "Studi Kasus",
+    icon: "heroicons:arrow-trending-up",
+    link: "studi-kasus",
+    isHide: false,
+  },
+  {
     isHeadr: true,
     title: "apps",
   },

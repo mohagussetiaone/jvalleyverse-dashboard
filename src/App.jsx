@@ -34,6 +34,7 @@ import ChapterDetail from "@/pages/ChapterDetails";
 
 import Users from "@/pages/Users";
 import Roles from "@/pages/Roles";
+import StudyCase from "./pages/StudyCase";
 
 // Components
 import Button from "@/pages/components/button";
@@ -119,7 +120,7 @@ const router = createBrowserRouter([
     loader: authLoader,
     element: <Layout />,
     children: [
-      { path: "dashboard", element: <Dashboard /> },
+      { path: "/", element: <Dashboard /> },
       { path: "ecommerce", element: <Ecommerce /> },
       { path: "crm", element: <CrmPage /> },
       // developed
@@ -129,6 +130,7 @@ const router = createBrowserRouter([
       { path: "chapter-detail", element: <ChapterDetail /> },
       { path: "users", element: <Users /> },
       { path: "roles", element: <Roles /> },
+      { path: "studi-kasus", element: <StudyCase /> },
 
       { path: "banking", element: <BankingPage /> },
       { path: "todo", element: <TodoPage /> },
